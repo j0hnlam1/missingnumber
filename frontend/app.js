@@ -6,6 +6,7 @@ var myApp = angular.module('Myapp', ["ngRoute"]);
 		$routeProvider
 			.when('/', 
 			{
+				controller: 'userController',
 				templateUrl: "partials/home.html"
 			})
 			.otherwise({

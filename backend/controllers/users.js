@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var homeDb = mongoose.model('Homedb');
+var userDb = mongoose.model('Userdb');
 
 module.exports = (function() {
 	return {
