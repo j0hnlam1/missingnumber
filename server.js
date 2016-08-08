@@ -2,6 +2,9 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 
+// var bcrypt = require('bcrypt');
+
+
 var app = express();
 
 app.use(express.static(path.join(__dirname, './frontend')));
