@@ -1,5 +1,11 @@
 
-<div ng-controller='mapController' data-ng-init="init()">
+<!-- <div ng-controller='mapController' data-ng-init="init()">
 	<input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+    <div id="map"></div>
+</div> -->
+
+
+<div map-lazy-load="https://maps.google.com/maps/api/js"
+  map-lazy-load-params="{{googleMapsUrl}}">
+  <ng-map center="41,-87" zoom="3"></ng-map>
 </div>
