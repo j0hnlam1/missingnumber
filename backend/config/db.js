@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var fs = require('fs');
 
 mongoose.connect('mongodb://0.0.0.0/PokeGo');
-// this file connects to mongodb
 
 var models_path = __dirname + "/../model"
 

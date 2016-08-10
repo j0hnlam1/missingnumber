@@ -1,4 +1,4 @@
-myApp.controller('chatController', function($scope, $routeParams) {
+myApp.controller('mapController', function($scope, $routeParams) {
 
     
 
@@ -143,7 +143,7 @@ myApp.controller('chatController', function($scope, $routeParams) {
         script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&libraries=places&callback=initAutocomplete';
         document.body.appendChild(script);
     });
-}
+})
 
 
 

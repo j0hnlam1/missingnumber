@@ -6,7 +6,7 @@ var myApp = angular.module('Myapp', ["ngRoute"]);
 		$routeProvider
 			.when('/', 
 			{
-				controller: 'userController',
+				controller: 'mapController',
 				templateUrl: "partials/home.html"
 			})
 			.otherwise({
