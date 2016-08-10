@@ -1,4 +1,4 @@
-var myApp = angular.module('Myapp', ["ngRoute"]);
+var myApp = angular.module('Myapp', ["ngRoute", "ngMap"]);
 
 (function(){
 	myApp.config(function($routeProvider){
@@ -14,3 +14,4 @@ var myApp = angular.module('Myapp', ["ngRoute"]);
 			})
 	})
 }());
+
