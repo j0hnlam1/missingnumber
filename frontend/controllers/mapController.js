@@ -1,12 +1,18 @@
 (function(){
     'use strict';
     angular
-    .module('Myapp')
+    .module('Myapp', ['ngRoute'])
     .controller('mapController', mapController);
 
 
-    function mapController($scope, $routeParams){
+    function mapController($scope, $routeParams, uiGmapGoogleMapApi){
+        
+        uiGmapGoogleMapApi.then(function(maps) {
+            console.log(maps);
+            console.log('yayao');
+        });
         console.log('here');
+        $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
 
         $scope.initAutocomplete = function(){
             console.log('chip');
@@ -137,13 +143,13 @@
             });
         };
 
-        $scope.init = function () {
-            console.log('what');
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&libraries=places&callback=initAutocomplete';
-            document.body.appendChild(script);
-        };
+        // $scope.init = function () {
+        //     console.log('what');
+        //     var script = document.createElement('script');
+        //     script.type = 'text/javascript';
+        //     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&libraries=places&callback=initAutocomplete';
+        //     document.body.appendChild(script);
+        // };
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
