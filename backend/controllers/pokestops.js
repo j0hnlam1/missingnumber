@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Pokemon = mongoose.model('Pokemon');
+var Pokestop = mongoose.model('Pokestop');
 
 module.exports = (function() {
 	return {
@@ -8,14 +8,14 @@ module.exports = (function() {
 		},
 		create: function(req, res){
 			console.log(req.body);
-			Pokemon.create({pokeId: req.body.pokeId, position: req.body.position}, function(err, results) {
+			Pokestop.create({position: req.body.position}, function(err, results) {
 				if(err){
 					console.log(err);
 				}
 			})
 		},
 		find: function(req, res){
-			Pokemon.find({}, function(err, results){
+			Pokestop.find({}, function(err, results){
 				if(err){
 					console.log(err);
 				} else {

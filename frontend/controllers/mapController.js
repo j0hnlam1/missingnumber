@@ -1,224 +1,235 @@
-
-
-// myApp.controller('mapController', function($scope, $routeParams) {
-
-    
-
-//     function initAutocomplete(){
-//         var map = new google.maps.Map(document.getElementById('map'), {
-//             center: {lat: -33.8688, lng: 151.2195},
-//             zoom: 13,
-//             mapTypeId: 'roadmap'
-//         });
-
-//         var markers = [];
-
-//         var image = '../assets/pikachu.png';
-
-//         var icon = {
-//                 url: image,
-//                 size: new google.maps.Size(91, 91),
-//                 origin: new google.maps.Point(0, 0),
-//                 anchor: new google.maps.Point(17, 34),
-//                 scaledSize: new google.maps.Size(50, 50)
-//             };
-
-//         markers.push(new google.maps.Marker({
-//                 map: map,
-//                 icon: icon,
-//                 title: "testCase",
-//                 position: {lat: 37.5482697, lng: -121.98857190000001}
-//             }));
-
-
-//         var infoWindow = new google.maps.InfoWindow({map: map});
-
-//         // Try HTML5 geolocation.
-//         if (navigator.geolocation) {
-//             navigator.geolocation.getCurrentPosition(function(position) {
-//                 var pos = {
-//                     lat: position.coords.latitude,
-//                     lng: position.coords.longitude
-//                 };
-//                 var image = '../assets/ash.png';
-
-// (function(){
-//     'use strict';
-//     angular
-//     .module('Myapp')
-//     .controller('mapController', mapController);
-
-
-//     function mapController($scope, $routeParams){
-//         console.log('here');
-
-//         $scope.initAutocomplete = function(){
-//             console.log('chip');
-//             var map = new google.maps.Map(document.getElementById('map'), {
-//                 center: {lat: -33.8688, lng: 151.2195},
-//                 zoom: 13,
-//                 mapTypeId: 'roadmap'
-//             });
-
-
-//             var markers = [];
-//             var image = '../assets/pikachu.png';
-
-//             var icon = {
-//                     url: image,
-//                     size: new google.maps.Size(91, 91),
-//                     origin: new google.maps.Point(0, 0),
-//                     anchor: new google.maps.Point(17, 34),
-//                     scaledSize: new google.maps.Size(50, 50)
-//             };
-
-//             markers.push(new google.maps.Marker({
-//                     map: map,
-//                     icon: icon,
-//                     title: "testCase",
-//                     position: {lat: 37.5482697, lng: -121.98857190000001}
-//             }));
-
-
-//             var infoWindow = new google.maps.InfoWindow({map: map});
-
-//             // Try HTML5 geolocation.
-//             if (navigator.geolocation) {
-//                 navigator.geolocation.getCurrentPosition(function(position) {
-//                     var pos = {
-//                         lat: position.coords.latitude,
-//                         lng: position.coords.longitude
-//                     };
-//                     var image = '../assets/ash.png';
-
-//                     infoWindow.setPosition(pos);
-//                     infoWindow.setContent('Ash is here.');
-//                     map.setCenter(pos);
-
-//                     var icon = {
-//                         url: image,
-//                         size: new google.maps.Size(91, 91),
-//                         origin: new google.maps.Point(0, 0),
-//                         anchor: new google.maps.Point(17, 34),
-//                         scaledSize: new google.maps.Size(50, 50)
-//                     };
-
-//                     markers.push(new google.maps.Marker({
-//                         map: map,
-//                         icon: icon,
-//                         title: "Ash",
-//                         position: pos
-//                     }));
-
-//                 }, function() {
-//                     handleLocationError(true, infoWindow, map.getCenter());
-//                 });
-//             } else {
-//                 // Browser doesn't support Geolocation
-//                 handleLocationError(false, infoWindow, map.getCenter());
-//             }
-
-//             // Create the search box and link it to the UI element.
-//             var input = document.getElementById('pac-input');
-//             var searchBox = new google.maps.places.SearchBox(input);
-//             map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-//             // Bias the SearchBox results towards current map's viewport.
-//             map.addListener('bounds_changed', function() {
-//                 searchBox.setBounds(map.getBounds());
-//             });
-
+myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFactory){
+    // initiates google map
+    NgMap.getMap('map').then(function(map){
+        console.log('here');
+    });
+    // allow: lets you add a tempory marker to map when true, markerType: 0 is pokemon, 1 is gyms,
+    // 2 is pokestops, pokemon, gyms, pokestops: holds the data for all markers 
+    $scope.allow = false;
+    $scope.markerType = 0;
+    $scope.pokemon = [];
+    $scope.gyms = [];
+    $scope.pokestops = [];
+    // icon for gym
+    var gymImage = '../assets/gym.png';
+    var gymIcon = {
+        url: gymImage,
+        size: [91, 91],
+        origin: [0, 0],
+        anchor: [17, 34],
+        scaledSize: [50, 50]
+    };
+    // icon for pokestop
+    var pokestopImage = '../assets/pokestop.png';
+    var pokestopIcon = {
+        url: pokestopImage,
+        size: [91, 91],
+        origin: [0, 0],
+        anchor: [17, 34],
+        scaledSize: [50, 50]
+    };
+    // for finding current location
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(position){
+            // current position coordinates
+            $scope.pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
             
-//             // Listen for the event fired when the user selects a prediction and retrieve
-//             // more details for that place.
-//             searchBox.addListener('places_changed', function() {
-//                 var places = searchBox.getPlaces();
-//                 console.log(places);
-//                 console.log(places[0].geometry.location.lat());
-//                 console.log(places[0].geometry.location.lng());
-//                 if (places.length == 0) {
-//                     return;
-//                 }
+            var icon = {
+                url: '../assets/ash.png',
+                size: [91,91],
+                origin: [0, 0],
+                anchor: [17, 34],
+                scaledSize: [50, 50]
+            }
 
-//                 // Clear out the old markers.
-//                 markers.forEach(function(marker) {
-//                     marker.setMap(null);
-//                 });
-//                 markers = [];
+            $scope.pokemon.push({
+                pokeId: 0,
+                icon: icon,
+                title: "You're location",
+                position: [position.coords.latitude, position.coords.longitude],
+                confirmed: true
+            });
 
-//                 // For each place, get the icon, name and location.
-//                 var bounds = new google.maps.LatLngBounds();
-//                 places.forEach(function(place) {
+        }, function(){
+            handleLocationError(true, infoWindow, map.getCenter());
+        });
+    } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+    }
+    // db call for all pokemon
+    mapFactory.findPokemon(function(pokemons){
+        for(var i = 0; i < pokemons.length; i++){
+            var pokemonIcon = {
+                url: "http://pokeapi.co/media/sprites/pokemon/" + [pokemons[i].pokeId] + ".png",
+                size: [91, 91],
+                origin: [0, 0],
+                anchor: [17, 34],
+                scaledSize: [75, 75]
+            };
 
-//                     var image = '../assets/pikachu.png';
-//                     if (!place.geometry) {
-//                         console.log("Returned place contains no geometry");
-//                         return;
-//                     }
-//                     var icon = {
-//                         url: image,
-//                         size: new google.maps.Size(91, 91),
-//                         origin: new google.maps.Point(0, 0),
-//                         anchor: new google.maps.Point(17, 34),
-//                         scaledSize: new google.maps.Size(50, 50)
-//                     };
+            $scope.pokemon.push({
+                pokeId: pokemons[i].pokeId,
+                icon: pokemonIcon,
+                title: "testCase",
+                position: pokemons[i].position,
+                confirmed: true
+            });
+        }
+    });
+    // db call for all gyms
+    mapFactory.findGym(function(gyms){
+        for(var i = 0; i < gyms.length; i++){
+            $scope.gyms.push({
+                icon: gymIcon,
+                title: "testCase",
+                position: gyms[i].position,
+                confirmed: true
+            });
+        }
+    });
+    // db call for all pokestops
+    mapFactory.findPokestop(function(pokestops){
+        for(var i = 0; i < pokestops.length; i++){
+            $scope.pokestops.push({
+                pokeId: pokestops[i].pokeId,
+                icon: pokestopIcon,
+                title: "testCase",
+                position: pokestops[i].position,
+                confirmed: true
+            });
+        }
+    });
+    // adds temporary marker to map, parameters(event: lets you get the
+    // clicked location coordinates, pokeId: pokemon id)
+    $scope.addMarker = function(event, pokeId){
+        switchCancel();
+        if($scope.allow == true){
+            var pos = [event.latLng.lat(), event.latLng.lng()]
+            if($scope.markerType == 0){
+                var pokemonIcon = {
+                    url: "http://pokeapi.co/media/sprites/pokemon/" + pokeId + ".png",
+                    size: [91, 91],
+                    origin: [0, 0],
+                    anchor: [17, 34],
+                    scaledSize: [75, 75]
+                };
 
-//                     // Create a marker for each place.
-//                     markers.push(new google.maps.Marker({
-//                         map: map,
-//                         icon: icon,
-//                         title: place.name,
-//                         position: place.geometry.location
-//                     }));
+                $scope.pokemon.push({
+                    pokeId: pokeId,
+                    icon: pokemonIcon,
+                    title: "New Marker",
+                    position: pos,
+                    confirmed: false
+                });
+            }
+            if($scope.markerType == 1){
+                $scope.gyms.push({
+                    pokeId: pokeId,
+                    icon: gymIcon,
+                    title: "New Marker",
+                    position: pos,
+                    confirmed: false
+                });
+            }
+            if($scope.markerType == 2){
+                $scope.pokestops.push({
+                    pokeId: pokeId,
+                    icon: pokestopIcon,
+                    title: "New Marker",
+                    position: pos,
+                    confirmed: false
+                });
+            }
+        }
+    }
+    // adds temporary markers to db making them permanent markers
+    $scope.confirmMarker = function(){
+        if($scope.markerType == 0){
+            var last = $scope.pokemon[$scope.pokemon.length - 1];
+            if(last != undefined){
+                if(last.confirmed == false){
+                    mapFactory.newPokemon(last);
+                }
+            }
+            last.confirmed = true;
+            $scope.allow = false;
+        }
+        if($scope.markerType == 1){
+            var last = $scope.gyms[$scope.gyms.length - 1];
+            if(last != undefined){
+                if(last.confirmed == false){
+                    mapFactory.newGym(last);
+                }
+            }
+            last.confirmed = true;
+            $scope.allow = false;
+        }
+        if($scope.markerType == 2){
+            var last = $scope.pokestops[$scope.pokestops.length - 1];
+            if(last != undefined){
+                if(last.confirmed == false){
+                    mapFactory.newPokestop(last);
+                }
+            }
+            last.confirmed = true;
+            $scope.allow = false;
+        }
+    }
+    // function to let you add temporary markers to map
+    $scope.allowMarker = function(){
+        $scope.allow = true;
+    }
+    // disallows adding temporary markers to map and removes temporary markers
+    $scope.cancelMarker = function(){
+        switchCancel();
+        $scope.allow = false;
+    }
+    // switches markerType to the whichever parameter is inputted and removes temporary markers
+    $scope.switchMarker = function(type){
+        switchCancel();
+        $scope.markerType = type;
+        $scope.allow = false;
+    }
+    // helper function that removes the temporary markers; used in numerous other functions
+    function switchCancel(){
+        if($scope.markerType == 0){
+            var last = $scope.pokemon[$scope.pokemon.length - 1];
+            if(last != undefined){
+                if(last.confirmed == false){
+                    $scope.pokemon.pop();
+                }
+            }
+        }
+        if($scope.markerType == 1){
+            var last = $scope.gyms[$scope.gyms.length - 1];
+            if(last != undefined){
+                if(last.confirmed == false){
+                    $scope.gyms.pop();
+                }
+            }
+        }
+        if($scope.markerType == 2){
+            var last = $scope.pokestops[$scope.pokestops.length - 1];
+            if(last != undefined){
+                if(last.confirmed == false){
+                    $scope.pokestops.pop();
+                }
+            }
+        }
+    }
 
-//                     if (place.geometry.viewport) {
-//                         // Only geocodes have viewport.
-//                         bounds.union(place.geometry.viewport);
-//                     } else {
-//                         bounds.extend(place.geometry.location);
-//                     }
-//                 });
-//             map.fitBounds(bounds);
-//             });
-//         };
+    function handleLocationError(browserHasGeolocation, infoWindow, pos){
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+      }
 
-//         $scope.init = function () {
-//             console.log('what');
-//             var script = document.createElement('script');
-//             script.type = 'text/javascript';
-//             script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&libraries=places&callback=initAutocomplete';
-//             document.body.appendChild(script);
-//         };
-
-//         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-//             infoWindow.setPosition(pos);
-//             infoWindow.setContent(browserHasGeolocation ?
-//                                   'Error: The Geolocation service failed.' :
-//                                   'Error: Your browser doesn\'t support geolocation.');
-//         };
-        
-//     }
-
-//     window.addEventListener('load',function(){
-
-//         var script = document.createElement('script');
-//         script.type = 'text/javascript';
-//         script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&libraries=places&callback=initAutocomplete';
-//         document.body.appendChild(script);
-//     });
-// })
-
-// })();
-
-myApp.controller('mapController', function($scope, $routeParams, NgMap) {
-
-    NgMap.getMap().then(function(map) {
-    console.log(map.getCenter());
-    console.log('markers', map.markers);
-    console.log('shapes', map.shapes);
-  });
-
-    $scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys";
+    $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys";
 
 });
 

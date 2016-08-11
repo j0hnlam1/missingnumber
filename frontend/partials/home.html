@@ -1,11 +1,24 @@
-
-<!-- <div ng-controller='mapController' data-ng-init="init()">
-	<input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <div id="map"></div>
-</div> -->
-
-
-<div map-lazy-load="https://maps.google.com/maps/api/js"
-  map-lazy-load-params="{{googleMapsUrl}}">
-  <ng-map center="41,-87" zoom="3"></ng-map>
-</div>
+	<!-- <input id="pac-input" class="controls" type="text" placeholder="Search Box"> -->
+	<div map-lazy-load="https://maps.google.com/maps/api/js"
+	  map-lazy-load-params="{{googleMapsUrl}}">
+	  	<ng-map id='map' center="{{pos.lat}}, {{pos.lng}}" geo-fallback-center="37.572585, -121.059525" zoom="13" on-click="addMarker(2)">
+	  		<marker ng-repeat="p in pokemon"
+	  			position="{{p.position}}"
+	  			icon="{{p.icon}}">
+	  		</marker>
+	  		<marker ng-repeat="g in gyms"
+	  			position="{{g.position}}"
+	  			icon="{{g.icon}}">
+	  		</marker>
+	  		<marker ng-repeat="m in pokestops"
+	  			position="{{m.position}}"
+	  			icon="{{m.icon}}">
+	  		</marker>
+	  	</ng-map>
+	</div>
+	<button ng-click='allowMarker()'>Add Marker</button>
+	<button ng-click='confirmMarker()'>Confirm Marker</button>
+	<button ng-click='cancelMarker()'>Cancel Marker</button>
+	<button ng-click='switchMarker(0)'>Pokemon</button>
+	<button ng-click='switchMarker(1)'>Gym</button>
+	<button ng-click='switchMarker(2)'>Pokestop</button>

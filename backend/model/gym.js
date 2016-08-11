@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 
-var PokeSchema = new mongoose.Schema({
-  	pokeId : Number,
+var GymSchema = new mongoose.Schema({
   	position : Array,
   	createdAt : {type: Date, default: Date.now}
 });
-mongoose.model('Pokemon', PokeSchema);
+mongoose.model('Gym', GymSchema);
