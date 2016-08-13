@@ -12,6 +12,9 @@ module.exports = function(app){
     app.post('/newPokemon', function(req, res) {
       	pokeController.create(req, res);
     })
+    app.get('/removePokemon/:lat/:lng', function(req, res) {
+    	pokeController.remove(req, res);
+    })
     app.get('/findGym', function(req, res) {
     	gymController.find(req, res);
     })
