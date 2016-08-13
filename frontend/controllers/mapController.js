@@ -12,7 +12,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.gyms = [];
     $scope.pokestops = [];
     // icon for gym
-    var gymImage = '../assets/gym.png';
+    var gymImage = '../assets/images/gym.png';
     var gymIcon = {
         url: gymImage,
         size: [91, 91],
@@ -21,7 +21,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         scaledSize: [50, 50]
     };
     // icon for pokestop
-    var pokestopImage = '../assets/pokestop.png';
+    var pokestopImage = '../assets/images/pokestop.png';
     var pokestopIcon = {
         url: pokestopImage,
         size: [91, 91],
@@ -39,7 +39,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             };
             
             var icon = {
-                url: '../assets/ash.png',
+                url: '../assets/images/ash.png',
                 size: [91,91],
                 origin: [0, 0],
                 anchor: [17, 34],
