@@ -14,6 +14,7 @@ module.exports = (function() {
 				}
 			})
 		},
+
 		find: function(req, res) {
 			Pokemon.find({}, function(err, results) {
 				if (err) {

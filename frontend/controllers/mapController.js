@@ -30,21 +30,23 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         scaledSize: [50, 50]
     };
     // for finding current location
+
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
+
             // current position coordinates
             $scope.pos = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-            
+            console.log($scope.pos);
             var icon = {
                 url: '../assets/images/ash.png',
                 size: [91,91],
                 origin: [0, 0],
                 anchor: [17, 34],
                 scaledSize: [50, 50]
-            }
+            };
 
             $scope.pokemon.push({
                 pokeId: 0,
@@ -53,17 +55,13 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                 position: [position.coords.latitude, position.coords.longitude],
                 confirmed: true
             });
-
-        // }, function() {
-        //     handleLocationError(true, infoWindow, map.getCenter());
         });
-    } else {
-        // Browser doesn't support Geolocation
-        // handleLocationError(false, infoWindow, map.getCenter());
     }
+
     // db call for all pokemon
     mapFactory.findPokemon(function(pokemons) {
         for (var i = 0; i < pokemons.length; i++) {
+
             var pokemonIcon = {
                 url: "../assets/images/" + [pokemons[i].pokeId] + ".png",
                 size: [91, 91],
