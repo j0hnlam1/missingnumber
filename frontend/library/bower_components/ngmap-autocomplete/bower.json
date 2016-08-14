@@ -1,0 +1,24 @@
+{
+	"name": "ngmap-autocomplete",
+	"version": "1.0.0",
+	"authors": [
+    	"Stéphane Dumontier <dum.stephane@gmail.com>"
+  	],
+	"homepage": "https://github.com/sdum/ngMapAutoComplete",
+	"description": "Google Places autocomplete text box on your Google Maps",
+	"main": "./src/ngMapAutocomplete.js",
+	"dependencies": {
+		"underscore": "~1.8.0",
+		"ngmap": "~1.9.1"
+	},
+	"ignore": [
+		"docs"
+	],
+	"keywords": [
+    	"angularjs",
+    	"angularjs-directive",
+    	"google-maps",
+		"google-places"
+  	],
+	"license": "MIT"
+}
