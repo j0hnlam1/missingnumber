@@ -60,23 +60,26 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
     // db call for all pokemon
     mapFactory.findPokemon(function(pokemons) {
-        for (var i = 0; i < pokemons.length; i++) {
+        for (var i = 1; i < pokemons.length; i++) {
+            // console.log(pokemons);
+           
+                
+                var pokemonIcon = {
+                    url: "../assets/images/pokemons/" + pokemons[i].pokeId + ".png",
+                    size: [91, 91],
+                    origin: [0, 0],
+                    anchor: [17, 34],
+                    scaledSize: [75, 75]
+                };
+                $scope.pokemon.push({
+                    pokeId: pokemons[i].pokeId,
+                    icon: pokemonIcon,
+                    title: "testCase",
+                    position: pokemons[i].position,
+                    confirmed: true
+                });             
+            
 
-            var pokemonIcon = {
-                url: "http://pokeapi.co/media/sprites/pokemon/" + [pokemons[i].pokeId] + ".png",
-                size: [91, 91],
-                origin: [0, 0],
-                anchor: [17, 34],
-                scaledSize: [75, 75]
-            };
-
-            $scope.pokemon.push({
-                pokeId: pokemons[i].pokeId,
-                icon: pokemonIcon,
-                title: "testCase",
-                position: pokemons[i].position,
-                confirmed: true
-            });
         }
     });
     // db call for all gyms
@@ -110,7 +113,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             var pos = [event.latLng.lat(), event.latLng.lng()]
             if ($scope.markerType == 0) {
                 var pokemonIcon = {
-                    url: "http://pokeapi.co/media/sprites/pokemon/" + pokeId + ".png",
+                    url: "../assets/images/pokemons/" + pokeId + ".png",
                     size: [91, 91],
                     origin: [0, 0],
                     anchor: [17, 34],
