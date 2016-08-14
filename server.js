@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 require('./backend/config/db.js');
 require('./backend/config/routes.js')(app);
-app.listen(8000, '0.0.0.0', function(){
+
+app.listen(8000, function(){
 	console.log('listening port 8000.....');
 })

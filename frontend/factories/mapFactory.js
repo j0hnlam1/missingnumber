@@ -17,6 +17,12 @@ myApp.factory('mapFactory', function($http) {
         })
 	}
 
+	factory.removePokemon = function(lat, lng){
+		$http.get("/removePokemon/" + lat + "/"+ lng).success(function(output) {
+			console.log('success');
+        })
+	}
+
 	factory.findGym = function(callback){
 		$http.get("/findGym").success(function(output){
 			callback(output);
