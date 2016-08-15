@@ -118,6 +118,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             if ($scope.markerType == 0) {
                 $scope.hide = false;
                 $scope.show = true;
+                // console.log($scope.pokeId);
                 var pokemonIcon = {
                     url: "../assets/images/pokemons/" + $scope.pokeId + ".png",
                     size: [91, 91],
@@ -281,6 +282,8 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
 
 /************SEARCH BAR FOR POKEMON**********/
+/************SEARCH BAR FOR POKEMON**********/
+/************SEARCH BAR FOR POKEMON**********/
     function DemoCtrl ($timeout, $q, $log) {
     var self = this;
 
@@ -338,6 +341,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
           'url'       : './assets/images/pokemons/3.png',
         }
       ];
+        console.log(repos);
       return repos.map( function (repo) {
         repo.value = repo.name.toLowerCase();
         return repo;
@@ -357,6 +361,8 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
   }
 
+  /***************** END OF SERACH BAR *******************/
+  /***************** END OF SERACH BAR *******************/
   /***************** END OF SERACH BAR *******************/
 
 });
