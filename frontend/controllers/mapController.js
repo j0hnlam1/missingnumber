@@ -11,6 +11,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.pokemon = [];
     $scope.gyms = [];
     $scope.pokestops = [];
+    $scope.pokemons = [];
     // icon for gym
     var gymImage = '../assets/images/gym.png';
     var gymIcon = {
@@ -29,8 +30,14 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         anchor: [17, 34],
         scaledSize: [50, 50]
     };
+    
+    for (var i = 1; i < 151; i++) {
+        $scope.pokemons.push({
+            id: i,
+            image: "../assets/images/pokemons/" + i + ".png"
+        });
+    }
     // for finding current location
-
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
 
@@ -63,7 +70,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         for (var i = 0; i < pokemons.length; i++) {
 
             var pokemonIcon = {
-                url: "../assets/images/" + [pokemons[i].pokeId] + ".png",
+                url: "../assets/images/pokemons/" + [pokemons[i].pokeId] + ".png",
                 size: [91, 91],
                 origin: [0, 0],
                 anchor: [17, 34],
@@ -110,7 +117,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             var pos = [event.latLng.lat(), event.latLng.lng()]
             if ($scope.markerType == 0) {
                 var pokemonIcon = {
-                    url: "../assets/images/" + pokeId + ".png",
+                    url: "../assets/images/pokemons/" + pokeId + ".png",
                     size: [91, 91],
                     origin: [0, 0],
                     anchor: [17, 34],
