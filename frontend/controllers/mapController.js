@@ -1,20 +1,27 @@
 myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFactory) {
     // initiates google map
+    var heatmap;
     NgMap.getMap('map').then(function(map) {
-        console.log('here');
+        $scope.map = map;
+        heatmap = $scope.map.heatmapLayers.foo;
+        console.log(heatmap);
     });
+    
     // allow: lets you add a tempory marker to map when true, markerType: 0 is pokemon, 1 is gyms,
     // 2 is pokestops, pokemon, gyms, pokestops: holds the data for all markers 
     $scope.allow = false;
     $scope.report = false;
     $scope.hide = true;
     $scope.show = false;
+    $scope.heatShow = false;
     $scope.markerType = 0;
     $scope.pokemon = [];
     $scope.gyms = [];
     $scope.pokestops = [];
     $scope.pokemons = [];
     $scope.pokeId = 1;
+    $scope.heatData = [];
+    $scope.heatType = 0;
     // icon for gym
     var gymImage = '../assets/images/gym.png';
     var gymIcon = {
@@ -192,6 +199,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.allowMarker = function() {
         $scope.allow = true;
         $scope.report = false;
+        $scope.heatShow = false;
         if ($scope.markerType == 0) {
             $scope.hide = false;
             $scope.show = true;
@@ -240,10 +248,46 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.selectPokemon = function(poke) {
         $scope.pokeId = poke;
     }
+    $scope.toggleHeatMap = function(poke) {
+        if ($scope.heatData.length < 1) {
+            $scope.heatType = poke;
+            for (var i = 0; i < $scope.pokemon.length; i++) {
+                if ($scope.pokemon[i].pokeId == poke) {
+                    var data = new google.maps.LatLng($scope.pokemon[i].position[0], $scope.pokemon[i].position[1]);
+                    $scope.heatData.push(data);
+                }
+            }
+        } else {
+            if (poke != $scope.heatType) {
+                $scope.heatData.length = 0;
+                for (var i = 0; i < $scope.pokemon.length; i++) {
+                    if ($scope.pokemon[i].pokeId == poke) {
+                        var data = new google.maps.LatLng($scope.pokemon[i].position[0], $scope.pokemon[i].position[1]);
+                        $scope.heatData.push(data);
+                    }
+                }
+            }
+        }
+        heatmap.setMap(heatmap.getMap());
+        
+    }
+    $scope.toggleHeatPoke = function() {
+        if ($scope.heatShow == true){
+            $scope.heatShow = false;
+        } else {
+            $scope.heatShow = true;
+        }
+    }
+    $scope.heatOff = function() {
+        switchCancel();
+        $scope.heatData.length = 0;
+        heatmap.setMap(heatmap.getMap());
+    }
     // helper function that removes the temporary markers; used in numerous other functions
     function switchCancel() {
         $scope.hide = true;
         $scope.show = false;
+        $scope.heatShow = false;
         if ($scope.markerType == 0) {
             var last = $scope.pokemon[$scope.pokemon.length - 1];
             if (last != undefined) {
@@ -277,6 +321,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             'Error: Your browser doesn\'t support geolocation.');
       }
 
-    $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&library=places";
+    $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&library=places,visualization";
 
 });
