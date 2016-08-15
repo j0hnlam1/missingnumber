@@ -1,4 +1,9 @@
-var myApp = angular.module('Myapp', ["ngRoute", "ngMap", "ngMapAutocomplete"]);
+var myApp = angular.module('Myapp', ["ngRoute",
+									 "ngMap", 
+									 "ngMapAutocomplete",
+									 "ngMaterial",
+									 "ngMessages"
+									]);
 
 (function(){
 	myApp.config(function($routeProvider, $locationProvider){
@@ -25,6 +30,6 @@ var myApp = angular.module('Myapp', ["ngRoute", "ngMap", "ngMapAutocomplete"]);
                 requireBase: false
           	});
         }
-	})
+	});
 }());
 
