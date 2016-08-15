@@ -15,29 +15,18 @@
     <script src = "factories/mapFactory.js"></script>
     <base href="/">
 
-
-    <!-- Source for search box -->
-   <!--  <script src="https://rawgit.com/sdum/ngMapAutoComplete/master/src/ngMapAutocomplete.js"></script>
-    <script src="http://maps.google.com/maps/api/js"></script> -->
-    <!-- <script src="./library/bower_components/ngmap/build/scripts/ng-map.min.js"></script> -->
-   <!--  <script type="text/javascript" src="./library/bower_components/underscore/underscore-min.js"></script>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> -->
-
-    <!-- <script src="../library/bower_components/underscore/underscore-min.js"></script> -->
-    <!-- <script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script> -->
-    <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script> -->
-    <!-- <script src="http://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.min.js"></script> -->
-    <!-- <script type="text/javascript" src="../library/bower_components/ngmap-autocomplete/src/ngMapAutocomplete.js"></script> -->
-
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"> -->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />  
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="./library/bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="./library/bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="./library/bower_components/angular-messages/angular-messages.min.js"></script>
+    <!-- Angular Material Library -->
+    <script src="./library/bower_components/angular-material/angular-material.min.js"></script>
 
     <style>
         body {
             padding: 15px;
-        }
-        
+        }       
         .map-wrapper {
             margin-left: auto;
             margin-right: auto;
@@ -48,19 +37,10 @@
 
 </head> 
 <body>
-
-    <div ng-controller="mapController">
-
-        <!-- div class="map-wrapper">
-            <map center="41,-87" zoom="3">
-                <map-autocomplete placeholder="{{ 'Type a place here...' }}" position="{{ google.maps.ControlPosition.TOP_LEFT }}" />
-            </map>
-        </div> -->
-
-    </div>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <!-- need this line for the cities in the search bar -->
     <script src="http://maps.googleapis.com/maps/api/js?libraries=places,visualization&sensor=false"></script>
+
 
     <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script> -->
     <script src="http://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.min.js"></script>
