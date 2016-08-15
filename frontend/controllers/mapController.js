@@ -283,6 +283,9 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         $scope.heatData.length = 0;
         heatmap.setMap(heatmap.getMap());
     }
+    $scope.test = function() {
+        console.log($scope.pokemon);
+    }
     // helper function that removes the temporary markers; used in numerous other functions
     function switchCancel() {
         $scope.hide = true;

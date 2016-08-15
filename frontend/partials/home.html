@@ -21,7 +21,7 @@
 	  			position="{{p.position}}"
 	  			icon="{{p.icon}}">
 	  		</marker>
-	  		<marker ng-repeat="g in gyms"
+	  		<marker ng-repeat="g in gyms track by $index"
 	  			id="{{$index}}"
 	  			type="gym"
 	  			on-click="reportMarker()"
@@ -29,7 +29,7 @@
 	  			position="{{g.position}}"
 	  			icon="{{g.icon}}">
 	  		</marker>
-	  		<marker ng-repeat="m in pokestops"
+	  		<marker ng-repeat="m in pokestops track by $index"
 	  			id="{{$index}}"
 	  			type="pokestop"
 	  			on-click="reportMarker()"
@@ -74,10 +74,9 @@
 
 <div id='pokeList'>
 	<div ng-repeat='poke in pokemons'
-		ng-hide='hide'
 		ng-show='show'
 		style="display: inline-block; border: 1px solid black;"
-		ng-click="selectPokemon(poke.id)"><img src="{{poke.image}}"
+		ng-click="selectPokemon(poke.id)"><img ng-src="{{poke.image}}"
 		>
 	</div>
 </div>
@@ -85,7 +84,7 @@
 		<div ng-repeat='poke in pokemons'
 			ng-show='heatShow'
 			style="display: inline-block; border: 1px solid black;"
-			ng-click="toggleHeatMap(poke.id)"><img src="{{poke.image}}"
+			ng-click="toggleHeatMap(poke.id)"><img ng-src="{{poke.image}}"
 			>
 		</div>
 	</div>
