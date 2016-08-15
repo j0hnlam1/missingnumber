@@ -7,7 +7,7 @@
 	  	 center="{{pos.lat}}, {{pos.lng}}" 
 	  	 geo-fallback-center="37.572585, -121.059525" 
 	  	 zoom="13" 
-	  	 on-click="addMarker(25)"
+	  	 on-click="addMarker()"
 	  	 style ="height:500px">
 
 	  		<!-- The serach box -->
@@ -63,14 +63,20 @@
 	        </md-item-template>
 	      </md-autocomplete>
 	    </form>
-	</md-content>
-	
+	</md-content>	
 </div>
 
 
- 
 
-
+<div id='pokeList'>
+	<div ng-repeat='poke in pokemons'
+		ng-hide='hide'
+		ng-show='show'
+		style="display: inline-block; border: 1px solid black;"
+		ng-click="selectPokemon(poke.id)"><img src="{{poke.image}}"
+		>
+	</div>
+</div>
 
 
 
