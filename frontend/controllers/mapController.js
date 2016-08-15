@@ -7,11 +7,14 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     // 2 is pokestops, pokemon, gyms, pokestops: holds the data for all markers 
     $scope.allow = false;
     $scope.report = false;
+    $scope.hide = true;
+    $scope.show = false;
     $scope.markerType = 0;
     $scope.pokemon = [];
     $scope.gyms = [];
     $scope.pokestops = [];
     $scope.pokemons = [];
+    $scope.pokeId = 1;
     // icon for gym
     var gymImage = '../assets/images/gym.png';
     var gymIcon = {
@@ -67,23 +70,21 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
     // db call for all pokemon
     mapFactory.findPokemon(function(pokemons) {
-        for (var i = 0; i < pokemons.length; i++) {
-
+        for (var i = 1; i < pokemons.length; i++) {
             var pokemonIcon = {
-                url: "../assets/images/pokemons/" + [pokemons[i].pokeId] + ".png",
+                url: "../assets/images/pokemons/" + pokemons[i].pokeId + ".png",
                 size: [91, 91],
                 origin: [0, 0],
                 anchor: [17, 34],
                 scaledSize: [75, 75]
             };
-
             $scope.pokemon.push({
                 pokeId: pokemons[i].pokeId,
                 icon: pokemonIcon,
                 title: "testCase",
                 position: pokemons[i].position,
                 confirmed: true
-            });
+            });             
         }
     });
     // db call for all gyms
@@ -101,7 +102,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     mapFactory.findPokestop(function(pokestops) {
         for (var i = 0; i < pokestops.length; i++) {
             $scope.pokestops.push({
-                pokeId: pokestops[i].pokeId,
                 icon: pokestopIcon,
                 title: "testCase",
                 position: pokestops[i].position,
@@ -111,13 +111,15 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     });
     // adds temporary marker to map, parameters(event: lets you get the
     // clicked location coordinates, pokeId: pokemon id)
-    $scope.addMarker = function(event, pokeId) {
+    $scope.addMarker = function(event) {
         switchCancel();
         if ($scope.allow == true) {
             var pos = [event.latLng.lat(), event.latLng.lng()]
             if ($scope.markerType == 0) {
+                $scope.hide = false;
+                $scope.show = true;
                 var pokemonIcon = {
-                    url: "../assets/images/pokemons/" + pokeId + ".png",
+                    url: "../assets/images/pokemons/" + $scope.pokeId + ".png",
                     size: [91, 91],
                     origin: [0, 0],
                     anchor: [17, 34],
@@ -125,7 +127,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                 };
 
                 $scope.pokemon.push({
-                    pokeId: pokeId,
+                    pokeId: $scope.pokeId,
                     icon: pokemonIcon,
                     title: "New Marker",
                     position: pos,
@@ -134,7 +136,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             }
             if ($scope.markerType == 1) {
                 $scope.gyms.push({
-                    pokeId: pokeId,
                     icon: gymIcon,
                     title: "New Marker",
                     position: pos,
@@ -143,7 +144,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             }
             if ($scope.markerType == 2) {
                 $scope.pokestops.push({
-                    pokeId: pokeId,
                     icon: pokestopIcon,
                     title: "New Marker",
                     position: pos,
@@ -184,12 +184,18 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             last.confirmed = true;
             $scope.allow = false;
             $scope.report = false;
+            $scope.hide = true;
+            $scope.show = false;
         }
     }
     // function to let you add temporary markers to map
     $scope.allowMarker = function() {
         $scope.allow = true;
         $scope.report = false;
+        if ($scope.markerType == 0) {
+            $scope.hide = false;
+            $scope.show = true;
+        }
     }
     // disallows adding temporary markers to map and removes temporary markers
     $scope.cancelMarker = function() {
@@ -210,6 +216,8 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         $scope.report = true;
     }
     $scope.reportMarker = function() {
+        $scope.hide = true;
+        $scope.show = false;
         if (this.confirmed == true && $scope.report == true) {
             if (this.type == "pokemon"){
                 if (this.id > -1) {
@@ -229,8 +237,13 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             }
         }
     }
+    $scope.selectPokemon = function(poke) {
+        $scope.pokeId = poke;
+    }
     // helper function that removes the temporary markers; used in numerous other functions
     function switchCancel() {
+        $scope.hide = true;
+        $scope.show = false;
         if ($scope.markerType == 0) {
             var last = $scope.pokemon[$scope.pokemon.length - 1];
             if (last != undefined) {
