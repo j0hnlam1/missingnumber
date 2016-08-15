@@ -9,6 +9,7 @@
 	  	 zoom="13" 
 	  	 on-click="addMarker()"
 	  	 style ="height:500px">
+	  	 <heatmap-layer id="foo" data="heatData"></heatmap-layer>
 
 	  		<!-- The serach box -->
 	  		<map-autocomplete placeholder="{{ 'Type a place here...' }}" position="{{ google.maps.ControlPosition.TOP_LEFT }}" />
@@ -20,7 +21,7 @@
 	  			position="{{p.position}}"
 	  			icon="{{p.icon}}">
 	  		</marker>
-	  		<marker ng-repeat="g in gyms"
+	  		<marker ng-repeat="g in gyms track by $index"
 	  			id="{{$index}}"
 	  			type="gym"
 	  			on-click="reportMarker()"
@@ -28,7 +29,7 @@
 	  			position="{{g.position}}"
 	  			icon="{{g.icon}}">
 	  		</marker>
-	  		<marker ng-repeat="m in pokestops"
+	  		<marker ng-repeat="m in pokestops track by $index"
 	  			id="{{$index}}"
 	  			type="pokestop"
 	  			on-click="reportMarker()"
@@ -45,6 +46,9 @@
 	<button ng-click='switchMarker(0)'>Pokemon</button>
 	<button ng-click='switchMarker(1)'>Gym</button>
 	<button ng-click='switchMarker(2)'>Pokestop</button>
+	<button ng-click='toggleHeatPoke()'>Heat Map On</button>
+	<button ng-click='heatOff()'>Heat Map Off</button>
+
 </div>
 <div>
 	<md-content class="md-padding">
@@ -70,13 +74,20 @@
 
 <div id='pokeList'>
 	<div ng-repeat='poke in pokemons'
-		ng-hide='hide'
 		ng-show='show'
 		style="display: inline-block; border: 1px solid black;"
-		ng-click="selectPokemon(poke.id)"><img src="{{poke.image}}"
+		ng-click="selectPokemon(poke.id)"><img ng-src="{{poke.image}}"
 		>
 	</div>
 </div>
+<div id='heatList'>
+		<div ng-repeat='poke in pokemons'
+			ng-show='heatShow'
+			style="display: inline-block; border: 1px solid black;"
+			ng-click="toggleHeatMap(poke.id)"><img ng-src="{{poke.image}}"
+			>
+		</div>
+	</div>
 
 
 
