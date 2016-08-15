@@ -60,6 +60,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
     // db call for all pokemon
     mapFactory.findPokemon(function(pokemons) {
+
         for (var i = 1; i < pokemons.length; i++) {
             // console.log(pokemons);
            
@@ -78,8 +79,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                     position: pokemons[i].position,
                     confirmed: true
                 });             
-            
-
         }
     });
     // db call for all gyms
@@ -260,10 +259,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             'Error: Your browser doesn\'t support geolocation.');
       }
 
-    $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys";
+    $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&library=places";
 
 });
-
-
-
-
