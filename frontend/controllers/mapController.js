@@ -125,7 +125,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             if ($scope.markerType == 0) {
                 $scope.hide = false;
                 $scope.show = true;
-                // console.log($scope.pokeId);
                 var pokemonIcon = {
                     url: "../assets/images/pokemons/" + $scope.pokeId + ".png",
                     size: [91, 91],
@@ -329,23 +328,17 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
 
 /************SEARCH BAR FOR POKEMON**********/
-/************SEARCH BAR FOR POKEMON**********/
-/************SEARCH BAR FOR POKEMON**********/
-    function DemoCtrl ($timeout, $q, $log) {
+    function mapController ($timeout, $q, $log) {
     var self = this;
-
     self.simulateQuery = false;
     self.isDisabled    = false;
-
     self.repos         = loadAll();
     self.querySearch   = querySearch;
     self.selectedItemChange = selectedItemChange;
     self.searchTextChange   = searchTextChange;
-
     // ******************************
     // Internal methods
     // ******************************
-
     /**
      * Search for repos... use $timeout to simulate
      * remote dataservice call.
@@ -361,55 +354,64 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         return results;
       }
     }
-
     function searchTextChange(text) {
       $log.info('Text changed to ' + text);
     }
-
     function selectedItemChange(item) {
       $log.info('Item changed to ' + JSON.stringify(item));
     }
-
     /**
      * Build `components` list of key/value pairs
      */
     function loadAll() {
       var repos = [
         {
-          'name'      : 'bulbasaur',
-          'url'       : './assets/images/pokemons/1.png',
+          'name'      : 'Angular 1',
+          'url'       : 'https://github.com/angular/angular.js',
+          'watchers'  : '3,623',
+          'forks'     : '16,175',
         },
         {
-          'name'      : 'ivysaur',
-          'url'       : './assets/images/pokemons/2.png',
+          'name'      : 'Angular 2',
+          'url'       : 'https://github.com/angular/angular',
+          'watchers'  : '469',
+          'forks'     : '760',
         },
         {
-          'name'      : 'venasaur',
-          'url'       : './assets/images/pokemons/3.png',
+          'name'      : 'Angular Material',
+          'url'       : 'https://github.com/angular/material',
+          'watchers'  : '727',
+          'forks'     : '1,241',
+        },
+        {
+          'name'      : 'Bower Material',
+          'url'       : 'https://github.com/angular/bower-material',
+          'watchers'  : '42',
+          'forks'     : '84',
+        },
+        {
+          'name'      : 'Material Start',
+          'url'       : 'https://github.com/angular/material-start',
+          'watchers'  : '81',
+          'forks'     : '303',
         }
       ];
-        console.log(repos);
       return repos.map( function (repo) {
         repo.value = repo.name.toLowerCase();
         return repo;
       });
     }
-
     /**
      * Create filter function for a query string
      */
     function createFilterFor(query) {
       var lowercaseQuery = angular.lowercase(query);
-
       return function filterFn(item) {
         return (item.value.indexOf(lowercaseQuery) === 0);
       };
-
     }
   }
 
-  /***************** END OF SERACH BAR *******************/
-  /***************** END OF SERACH BAR *******************/
   /***************** END OF SERACH BAR *******************/
 
 });
