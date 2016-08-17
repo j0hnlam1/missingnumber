@@ -1,59 +1,100 @@
 	<!-- <input id="pac-input" class="controls" type="text" placeholder="Search Box"> -->
-<div>
-	<div map-lazy-load="https://maps.google.com/maps/api/js"
-	  map-lazy-load-params="{{googleMapsUrl}}">
+<div class="container">
+	<div class="row">
+    	<div class="col-md-8">
+			<div map-lazy-load="https://maps.google.com/maps/api/js"
+			  map-lazy-load-params="{{googleMapsUrl}}">
 
-	  	<map id='map'
-	  	 center="{{pos.lat}}, {{pos.lng}}" 
-	  	 geo-fallback-center="37.572585, -121.059525" 
-	  	 zoom="13" 
-	  	 on-click="addMarker()"
-	  	 style ="height:500px">
-	  	 <heatmap-layer id="foo" data="heatData"></heatmap-layer>
+			  	<map id='map'
+			  	 center="{{pos.lat}}, {{pos.lng}}" 
+			  	 geo-fallback-center="37.572585, -121.059525" 
+			  	 zoom="13" 
+			  	 on-click="addMarker()"
+			  	 style ="height:600px">
+			  	 <heatmap-layer id="foo" data="heatData"></heatmap-layer>
 
-	  		<!-- The serach box -->
-	  		<map-autocomplete placeholder="{{ 'Type a place here...' }}" position="{{ google.maps.ControlPosition.TOP_LEFT }}" />
-	  		<marker ng-repeat="p in pokemon track by $index"
-	  			id="{{$index}}"
-	  			type="pokemon"
-	  			on-click="reportMarker()"
-	  			confirmed="{{p.confirmed}}"
-	  			position="{{p.position}}"
-	  			icon="{{p.icon}}">
-	  		</marker>
-	  		<marker ng-repeat="g in gyms track by $index"
-	  			id="{{$index}}"
-	  			type="gym"
-	  			on-click="reportMarker()"
-	  			confirmed="{{g.confirmed}}"
-	  			position="{{g.position}}"
-	  			icon="{{g.icon}}">
-	  		</marker>
-	  		<marker ng-repeat="m in pokestops track by $index"
-	  			id="{{$index}}"
-	  			type="pokestop"
-	  			on-click="reportMarker()"
-	  			confirmed="{{m.confirmed}}"
-	  			position="{{m.position}}"
-	  			icon="{{m.icon}}">
-	  		</marker>
-	  	</map>
+			  		<!-- The serach box -->
+			  		<map-autocomplete placeholder="{{ 'Type a place here...' }}" position="{{ google.maps.ControlPosition.TOP_LEFT }}" />
+			  		<marker ng-repeat="p in pokemon track by $index"
+			  			ng-if="p.pokeId == pokeFilter && filterBool || p.pokeId == 0"
+			  			id="{{$index}}"
+			  			type="pokemon"
+			  			on-click="reportMarker()"
+			  			confirmed="{{p.confirmed}}"
+			  			position="{{p.position}}"
+			  			icon="{{p.icon}}">
+			  		</marker>
+			  		<marker ng-repeat="p in pokemon track by $index"
+			  			ng-if="!filterBool"
+			  			id="{{$index}}"
+			  			type="pokemon"
+			  			on-click="reportMarker()"
+			  			confirmed="{{p.confirmed}}"
+			  			position="{{p.position}}"
+			  			icon="{{p.icon}}">
+			  		</marker>
+			  		<marker ng-repeat="g in gyms track by $index"
+			  			id="{{$index}}"
+			  			type="gym"
+			  			on-click="reportMarker()"
+			  			confirmed="{{g.confirmed}}"
+			  			position="{{g.position}}"
+			  			icon="{{g.icon}}">
+			  		</marker>
+			  		<marker ng-repeat="m in pokestops track by $index"
+			  			id="{{$index}}"
+			  			type="pokestop"
+			  			on-click="reportMarker()"
+			  			confirmed="{{m.confirmed}}"
+			  			position="{{m.position}}"
+			  			icon="{{m.icon}}">
+			  		</marker>
+			  	</map>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="row">
+				<div class='topBut b' ng-click='allowMarker()'>Add Marker</div>
+				<div class='topBut' ng-click='toggleFilter()'>Filter On/Off</div>
+				<div class='topBut' ng-click='allowReport()'>Report Marker</div>
+			</div>
+			<div class="row">
+			<div class='midBut' ng-click='switchMarker(0)'
+					ng-show='showTypes'><img class='butImg' src='./assets/images/pikachu.png'></div>
+			<div class='midBut' ng-click='switchMarker(1)'
+					ng-show='showTypes'><img class='butImg' src='./assets/images/gym.png'></div>
+			<div class='midBut' ng-click='switchMarker(2)'
+					ng-show='showTypes'><img class='butImg' src='./assets/images/pokestop.png'></div>
+			</div>
+			<div class='cancfirm' ng-show='cancfirm' ng-click='confirmMarker()'>Confirm Marker</div>
+			<div class='cancfirm' ng-show='cancfirm' ng-click='cancelMarker()'>Cancel Marker</div>
+			<div id='pokeInstru' ng-show='pokeInstru'>Choose a pokemon</div>
+			<div id='clickInstru' ng-show='clickInstru'>Click on map to place object</div>
+			<div id='pokeList'>
+				<div ng-repeat='poke in pokemons'
+					ng-show='show'
+					style="display: inline-block; border: 1px solid black;"
+					ng-click="selectPokemon(poke.id)"><img ng-src="{{poke.image}}"
+					>
+				</div>
+				<div ng-repeat='poke in pokemons'
+					ng-show='showFilter'
+					style="display: inline-block; border: 1px solid black;"
+					ng-click="filterPoke(poke.id)"><img ng-src="{{poke.image}}"
+					>
+				</div>
+			</div>
+		</div>
 	</div>
-	<button ng-click='allowMarker()'>Add Marker</button>
-	<button ng-click='confirmMarker()'>Confirm Marker</button>
-	<button ng-click='cancelMarker()'>Cancel Marker</button>
-	<button ng-click='allowReport()'>Report Marker</button>
-	<button ng-click='switchMarker(0)'>Pokemon</button>
-	<button ng-click='switchMarker(1)'>Gym</button>
-	<button ng-click='switchMarker(2)'>Pokestop</button>
-	<button ng-click='toggleHeatPoke()'>Heat Map On</button>
-	<button ng-click='heatOff()'>Heat Map Off</button>
-
+	<!-- <button ng-click='test()'>test</button> -->
 </div>
 
 
 <!-- POKEMON SEARCH BAR -->
 <!--   <md-content class="md-padding">
+=======
+  <md-content layout-padding layout="column">
+>>>>>>> 04c9956a40d229079e9a14e478605e097e2d33bd
     <form ng-submit="$event.preventDefault()">
         <md-autocomplete ng-disabled="mapController.isDisabled" 
         				 md-no-cache="mapController.noCache" 
@@ -79,15 +120,6 @@
 
 
 
-
-<div id='pokeList'>
-	<div ng-repeat='poke in pokemons'
-		ng-show='show'
-		style="display: inline-block; border: 1px solid black;"
-		ng-click="selectPokemon(poke.id)"><img ng-src="{{poke.image}}"
-		>
-	</div>
-</div>
 <div id='heatList'>
 		<div ng-repeat='poke in pokemons'
 			ng-show='heatShow'
