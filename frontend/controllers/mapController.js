@@ -12,7 +12,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.report = false;
     $scope.show = false;
     $scope.heatShow = false;
-    $scope.markerType = 0;
+    $scope.markerType = 4;
     $scope.pokemon = [];
     $scope.gyms = [];
     $scope.pokestops = [];
@@ -20,11 +20,17 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.pokeId = 1;
     $scope.heatData = [];
     $scope.heatType = 0;
+    $scope.pokeFilter = 0;
+    $scope.filterBool = false;
+    $scope.showFilter = false;
+    $scope.showTypes = false;
+    $scope.clickInstru = false;
+    $scope.cancfirm = false;
+    $scope.pokeInstru = false;
    
     var d = new Date();
     d.setDate(d.getDate() - 1);
     var n = d.toISOString();
-    console.log(n);
     $scope.currentDate = n;
 
     // icon for gym
@@ -130,6 +136,9 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         var d = new Date();
         var n = d.toISOString();
         if ($scope.allow == true) {
+            if ($scope.markerType != 4) {
+                $scope.cancfirm = true;
+            }
             var pos = [event.latLng.lat(), event.latLng.lng()]
             if ($scope.markerType == 0) {
                 $scope.show = true;
@@ -201,16 +210,17 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             $scope.allow = false;
             $scope.report = false;
             $scope.show = false;
+            $scope.cancfirm = false;
         }
     }
     // function to let you add temporary markers to map
     $scope.allowMarker = function() {
+        switchCancel();
         $scope.allow = true;
         $scope.report = false;
         $scope.heatShow = false;
-        if ($scope.markerType == 0) {
-            $scope.show = true;
-        }
+        $scope.showTypes = true;
+        
     }
     // disallows adding temporary markers to map and removes temporary markers
     $scope.cancelMarker = function() {
@@ -221,9 +231,14 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     // switches markerType to the whichever parameter is inputted and removes temporary markers
     $scope.switchMarker = function(type) {
         switchCancel();
+        $scope.clickInstru = true;
         $scope.markerType = type;
-        $scope.allow = false;
+        // $scope.allow = false;
         $scope.report = false;
+        if ($scope.markerType == 0) {
+            $scope.show = true;
+            $scope.pokeInstru = true;
+        }
     }
     $scope.allowReport = function() {
         switchCancel();
@@ -231,7 +246,11 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         $scope.report = true;
     }
     $scope.reportMarker = function() {
-        $scope.show = false;
+        var last = $scope.pokemon[$scope.pokemon.length - 1];
+        if (last.confirmed == true) {
+            $scope.show = false;
+        }
+       
         if (this.confirmed == true && $scope.report == true) {
             if (this.type == "pokemon"){
                 if (this.id > -1) {
@@ -294,6 +313,25 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         $scope.heatData.length = 0;
         heatmap.setMap(heatmap.getMap());
     }
+    $scope.toggleFilter = function() {
+        var sfilter = $scope.showFilter;
+        var bfilter = $scope.filterBool;
+        switchCancel();
+        if (sfilter == true) {
+            $scope.showFilter = false;
+        } else {
+            $scope.showFilter = true;
+        }
+        if (bfilter == true) {
+            $scope.filterBool = false;
+            $scope.pokeFilter = 0;
+        } else {
+            $scope.filterBool = true;
+        }
+    }
+    $scope.filterPoke = function(poke) {
+        $scope.pokeFilter = poke;
+    }
     $scope.test = function() {
         console.log($scope.pokemon);
         console.log($scope.currentDate);
@@ -307,6 +345,12 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
     // helper function that removes the temporary markers; used in numerous other functions
     function switchCancel() {
+        $scope.cancfirm = false;
+        $scope.clickInstru = false;
+        $scope.pokeInstru = false;
+        $scope.filterBool = false;
+        $scope.showFilter = false;
+        $scope.showTypes = false;
         $scope.show = false;
         $scope.heatShow = false;
         if ($scope.markerType == 0) {
@@ -346,21 +390,17 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
 
 /************SEARCH BAR FOR POKEMON**********/
-    function DemoCtrl ($timeout, $q, $log) {
+    function mapController ($timeout, $q, $log) {
     var self = this;
-
     self.simulateQuery = false;
     self.isDisabled    = false;
-
     self.repos         = loadAll();
     self.querySearch   = querySearch;
     self.selectedItemChange = selectedItemChange;
     self.searchTextChange   = searchTextChange;
-
     // ******************************
     // Internal methods
     // ******************************
-
     /**
      * Search for repos... use $timeout to simulate
      * remote dataservice call.
@@ -376,31 +416,46 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         return results;
       }
     }
-
     function searchTextChange(text) {
       $log.info('Text changed to ' + text);
     }
-
     function selectedItemChange(item) {
       $log.info('Item changed to ' + JSON.stringify(item));
     }
-
     /**
      * Build `components` list of key/value pairs
      */
     function loadAll() {
       var repos = [
         {
-          'name'      : 'bulbasaur',
-          'url'       : './assets/images/pokemons/1.png',
+          'name'      : 'Angular 1',
+          'url'       : 'https://github.com/angular/angular.js',
+          'watchers'  : '3,623',
+          'forks'     : '16,175',
         },
         {
-          'name'      : 'ivysaur',
-          'url'       : './assets/images/pokemons/2.png',
+          'name'      : 'Angular 2',
+          'url'       : 'https://github.com/angular/angular',
+          'watchers'  : '469',
+          'forks'     : '760',
         },
         {
-          'name'      : 'venasaur',
-          'url'       : './assets/images/pokemons/3.png',
+          'name'      : 'Angular Material',
+          'url'       : 'https://github.com/angular/material',
+          'watchers'  : '727',
+          'forks'     : '1,241',
+        },
+        {
+          'name'      : 'Bower Material',
+          'url'       : 'https://github.com/angular/bower-material',
+          'watchers'  : '42',
+          'forks'     : '84',
+        },
+        {
+          'name'      : 'Material Start',
+          'url'       : 'https://github.com/angular/material-start',
+          'watchers'  : '81',
+          'forks'     : '303',
         }
       ];
       return repos.map( function (repo) {
@@ -408,17 +463,14 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         return repo;
       });
     }
-
     /**
      * Create filter function for a query string
      */
     function createFilterFor(query) {
       var lowercaseQuery = angular.lowercase(query);
-
       return function filterFn(item) {
         return (item.value.indexOf(lowercaseQuery) === 0);
       };
-
     }
   }
 

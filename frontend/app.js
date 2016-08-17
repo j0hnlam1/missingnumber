@@ -2,7 +2,8 @@ var myApp = angular.module('Myapp', ["ngRoute",
 									 "ngMap", 
 									 "ngMapAutocomplete",
 									 "ngMaterial",
-									 "ngMessages"
+									 "ngMessages",
+									 "material.svgAssetsCache"
 									]);
 
 (function(){
@@ -29,7 +30,7 @@ var myApp = angular.module('Myapp', ["ngRoute",
                 enabled: true,
                 requireBase: false
           	});
-        }
+        }  
 	});
 }());
 
