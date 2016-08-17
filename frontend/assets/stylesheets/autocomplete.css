@@ -61,3 +61,6 @@
     overflow: scroll;
     height: 900px;
   }
+  map {
+    cursor: help;
+  }

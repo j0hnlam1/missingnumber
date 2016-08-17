@@ -3,6 +3,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     var heatmap;
     NgMap.getMap('map').then(function(map) {
         $scope.map = map;
+        
         heatmap = $scope.map.heatmapLayers.foo;
     });
     
@@ -58,6 +59,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             image: "../assets/images/pokemons/" + i + ".png"
         });
     }
+
     // for finding current location
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
