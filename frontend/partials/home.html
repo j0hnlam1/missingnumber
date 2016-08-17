@@ -52,38 +52,30 @@
 </div>
 
 
-
-  <md-content layout-padding layout="column">
+<!-- POKEMON SEARCH BAR -->
+<!--   <md-content class="md-padding">
     <form ng-submit="$event.preventDefault()">
-      <md-autocomplete
-          ng-disabled="mapController.isDisabled"
-          md-no-cache="mapController.noCache"
-          md-selected-item="mapController.selectedItem"
-          md-search-text-change="mapController.searchTextChange(mapController.searchText)"
-          md-search-text="mapController.searchText"
-          md-selected-item-change="mapController.selectedItemChange(item)"
-          md-items="item in mapController.querySearch(mapController.searchText)"
-          md-item-text="item.name"
-          md-min-length="0"
-          placeholder="Pick an Angular repository"
-          md-menu-class="autocomplete-custom-template">
-        <md-item-template>
-          <span class="item-title">
-            <md-icon md-svg-icon="img/icons/octicon-repo.svg"></md-icon>
-            <span> {{item.name}} </span>
-          </span>
-          <span class="item-metadata">
-            <span class="item-metastat">
-              <strong>{{item.watchers}}</strong> watchers
-            </span>
-            <span class="item-metastat">
-              <strong>{{item.forks}}</strong> forks
-            </span>
-          </span>
-        </md-item-template>
-      </md-autocomplete>
+        <md-autocomplete ng-disabled="mapController.isDisabled" 
+        				 md-no-cache="mapController.noCache" 
+        				 md-selected-item="mapController.selectedItem" 
+        				 md-search-text-change="mapController.searchTextChange(mapController.searchText)" 
+        				 md-search-text="mapController.searchText" 
+        				 md-selected-item-change="mapController.selectedItemChange(item)" 
+        				 md-items="item in mapController.querySearch(mapController.searchText)" 
+        				 md-item-text="mapController.states" 
+        				 md-min-length="0" 
+        				 placeholder="Look for Pokemon">
+          <md-item-template>
+            <span md-highlight-text="mapController.searchText" md-highlight-flags="^i">{{item.display}}</span>
+          </md-item-template>
+          <md-not-found>
+            No Pokemon matching "{{mapController.searchText}}" were found.
+            
+          </md-not-found>
+        </md-autocomplete>
     </form>
-  </md-content>
+  </md-content> -->
+
 
 
 
