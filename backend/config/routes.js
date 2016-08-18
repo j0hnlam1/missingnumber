@@ -21,10 +21,16 @@ module.exports = function(app){
     app.post('/newGym', function(req, res) {
       	gymController.create(req, res);
     })
+    app.get('/removeGym/:lat/:lng', function(req, res) {
+        gymController.remove(req, res);
+    })
     app.get('/findPokestop', function(req, res) {
     	pokestopController.find(req, res);
     })
     app.post('/newPokestop', function(req, res) {
       	pokestopController.create(req, res);
+    })
+    app.get('/removePokemon/:lat/:lng', function(req, res) {
+        pokestopController.remove(req, res);
     })
 }
