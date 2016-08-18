@@ -14,8 +14,8 @@
 
 			  		<!-- The serach box -->
 			  		<map-autocomplete placeholder="{{ 'Type a place here...' }}" position="{{ google.maps.ControlPosition.TOP_LEFT }}" />
-			  		<marker ng-repeat="p in pokemon track by $index"
-			  			ng-if="p.pokeId == pokeFilter && filterBool || p.pokeId == 0"
+			  		<marker ng-repeat="p in filteredpokemon track by $index"
+			  			ng-if="filterBool"
 			  			id="{{$index}}"
 			  			type="pokemon"
 			  			on-click="markerInfo(p)"
@@ -68,16 +68,35 @@
 		</div>
 		<div class="col-md-4">
 			<div class="row">
-				<div class='topBut b' ng-click='allowMarker()'>Add Marker</div>
+				<div class='topBut' ng-click='allowMarker()'>Add Marker</div>
+					<!-- clicking allowmarker turns showTypes true -->
 				<div class='topBut' ng-click='toggleFilter()'>Filter On/Off</div>
+					<!-- clicking toggleFilter turns showFilter true -->
 			</div>
+
 			<div class="row" ng-show='showTypes'>
-			<div class='midBut' ng-click='switchMarker(0)'><img class='butImg' src='./assets/images/pikachu.png'></div>
-			<div class='midBut' ng-click='switchMarker(1)'><img class='butImg' src='./assets/images/gym.png'></div>
-			<div class='midBut' ng-click='switchMarker(2)'><img class='butImg' src='./assets/images/pokestop.png'></div>
+				<div class='midBut' ng-click='switchMarker(0)'>
+					<!-- clicking switchMarker(0) turns clickInstru true -->
+					<!-- changes markerType to pokemon -->
+					<!-- pokeInstru to true and show to true SHOWS POKEMON IN POKELIST-->
+					<img class='butImg' src='./assets/images/pikachu.png'>
+				</div>
+				<div class='midBut' ng-click='switchMarker(1)'>
+					<!-- clicking switchMarker(1) turns clickInstru true -->
+					<!-- changes markerType to gym -->
+					<img class='butImg' src='./assets/images/gym.png'>
+				</div>
+				<div class='midBut' ng-click='switchMarker(2)'>
+					<!-- clicking switchMarker(1) turns clickInstru true -->
+					<!-- changes markerType to pokestop -->
+					<img class='butImg' src='./assets/images/pokestop.png'>
+				</div>
 			</div>
+
 			<div class='cancfirm' ng-show='cancfirm' ng-click='confirmMarker()'>Confirm Marker</div>
 			<div class='cancfirm' ng-show='cancfirm' ng-click='cancelMarker()'>Cancel Marker</div>
+				<!-- clicking on marker runs addmarker() and turns cancfirm true -->
+
 			<div id='pokeInstru' ng-show='pokeInstru'>Choose a pokemon</div>
 			<div id='clickInstru' ng-show='clickInstru'>Click on map to place object</div>
 			<div id='pokeList' ng-show='showList'>
