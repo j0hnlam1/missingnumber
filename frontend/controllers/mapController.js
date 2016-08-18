@@ -20,13 +20,15 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.pokeId = 1;
     $scope.heatData = [];
     $scope.heatType = 0;
-    $scope.pokeFilter = 0;
     $scope.filterBool = false;
     $scope.showFilter = false;
     $scope.showTypes = false;
     $scope.clickInstru = false;
     $scope.cancfirm = false;
     $scope.pokeInstru = false;
+
+    // array used in filtering feature
+    $scope.filteredpokemon = [];
    
     var d = new Date();
     d.setDate(d.getDate() - 1);
@@ -75,8 +77,9 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                 anchor: [17, 34],
                 scaledSize: [50, 50]
             };
-
+            
             $scope.pokemon.push({
+
                 pokeId: 0,
                 icon: icon,
                 title: "You're location",
@@ -84,6 +87,17 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                 confirmed: true,
                 createdAt: n
             });
+
+            $scope.ash = {
+                pokeId: 0,
+                icon: icon,
+                title: "You're location",
+                position: [position.coords.latitude, position.coords.longitude],
+                confirmed: true,
+                createdAt: n
+            }
+
+            $scope.$apply();
         });
     }
 
@@ -135,6 +149,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         switchCancel();
         var d = new Date();
         var n = d.toISOString();
+        console.log(n);
         if ($scope.allow == true) {
             if ($scope.markerType != 4) {
                 $scope.cancfirm = true;
@@ -233,7 +248,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         switchCancel();
         $scope.clickInstru = true;
         $scope.markerType = type;
-        // $scope.allow = false;
+        $scope.allow = false;
         $scope.report = false;
         if ($scope.markerType == 0) {
             $scope.show = true;
@@ -246,6 +261,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         $scope.report = true;
     }
     $scope.reportMarker = function() {
+        console.log("here in reportmarker");
         var last = $scope.pokemon[$scope.pokemon.length - 1];
         if (last.confirmed == true) {
             $scope.show = false;
@@ -254,6 +270,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         if (this.confirmed == true && $scope.report == true) {
             if (this.type == "pokemon"){
                 if (this.id > -1) {
+                    console.log(this.id);
                     $scope.pokemon.splice(this.id, 1);
                     mapFactory.removePokemon(this.position.lat(), this.position.lng());
                 }
@@ -313,13 +330,14 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         $scope.heatData.length = 0;
         heatmap.setMap(heatmap.getMap());
     }
-    $scope.toggleFilter = function() {
+    $scope.toggleFilter = function() {    
         var sfilter = $scope.showFilter;
+        //$scope.showFilter = true
         var bfilter = $scope.filterBool;
+        //$scope.filterBool = false
         switchCancel();
-        if (sfilter == true) {
-            $scope.showFilter = false;
-        } else {
+
+        if (sfilter == false) {
             $scope.showFilter = true;
         }
         if (bfilter == true) {
@@ -327,11 +345,41 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             $scope.pokeFilter = 0;
         } else {
             $scope.filterBool = true;
+            $scope.filteredpokemon.push($scope.ash);
         }
     }
     $scope.filterPoke = function(poke) {
-        $scope.pokeFilter = poke;
+        // check if poke is in $scope.filteredpokemon array;
+        if (containsPoke(poke, $scope.filteredpokemon)) {
+            for (var i =0; i<$scope.filteredpokemon.length; i++) {
+                if (poke == $scope.filteredpokemon[i].pokeId) {
+                    $scope.filteredpokemon.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+        // any poke that is in the $scope.pokemon array will be pushed to $scope.filteredpokemon array
+        else {
+            for ( var i=0; i< $scope.pokemon.length; i++) {
+                // compares poke.id with $scope.pokemon and pushes into $scope.filteredpokemon if matached
+                if (poke == $scope.pokemon[i].pokeId) {
+                    $scope.filteredpokemon.push($scope.pokemon[i]);
+                }
+            }     
+        }
     }
+
+    function containsPoke(x, array){
+        for(var i=0 ; i<array.length; i++){
+            if(array[i].pokeId == x){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
     $scope.test = function() {
         console.log($scope.pokemon);
         console.log($scope.currentDate);
@@ -345,6 +393,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
     // helper function that removes the temporary markers; used in numerous other functions
     function switchCancel() {
+        $scope.filteredpokemon = [];
         $scope.cancfirm = false;
         $scope.clickInstru = false;
         $scope.pokeInstru = false;
