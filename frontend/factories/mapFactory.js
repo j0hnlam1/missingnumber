@@ -35,6 +35,12 @@ myApp.factory('mapFactory', function($http) {
         })
 	}
 
+	factory.removeGym = function(lat, lng){
+		$http.get("/removeGym/" + lat + "/"+ lng).success(function(output) {
+			console.log('success');
+        })
+	}
+
 	factory.findPokestop = function(callback){
 		$http.get("/findPokestop").success(function(output){
 			callback(output);
@@ -43,6 +49,12 @@ myApp.factory('mapFactory', function($http) {
 
 	factory.newPokestop = function(marker){
 		$http.post("/newPokestop", marker).success(function(output) {
+			console.log('success');
+        })
+	}
+
+	factory.removePokestop = function(lat, lng){
+		$http.get("/removePokestop/" + lat + "/"+ lng).success(function(output) {
 			console.log('success');
         })
 	}

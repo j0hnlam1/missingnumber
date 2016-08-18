@@ -22,6 +22,18 @@ module.exports = (function() {
 					res.json(results);
 				}
 			})
+		},
+		remove: function(req, res) {
+			var pos = [];
+			pos.push(parseFloat(req.params.lat));
+			pos.push(parseFloat(req.params.lng));
+			Pokestop.remove({position: pos}, function(err, results) {
+				if (err) {
+					console.log(err);
+				} else {
+					res.json(results);
+				}
+			})
 		}
 	}
 })();

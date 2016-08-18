@@ -9,23 +9,26 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     
     // allow: lets you add a tempory marker to map when true, markerType: 0 is pokemon, 1 is gyms,
     // 2 is pokestops, pokemon, gyms, pokestops: holds the data for all markers 
+    // array used in filtering feature
+    $scope.filteredpokemon = [];
     $scope.heatData = [];
     $scope.pokemon = [];
     $scope.gyms = [];
     $scope.pokestops = [];
     $scope.pokemons = [];
     $scope.pokeNames = ['ash', 'bulbasaur', 'ivysaur', 'venusaur', 'charmander', 'charmeleon', 'charizard', 'squirtle', 'wartortle', 'blastoise', 'caterpie', 'metapod', 'butterfree', 'weedle', 'kakuna', 'beedrill', 'pidgey', 'pidgeotto', 'pidgeot', 'rattata', 'raticate', 'spearow', 'fearow', 'ekans', 'arbok', 'pikachu', 'raichu', 'sandshrew', 'sandslash', 'nidoran-f', 'nidorina', 'nidoqueen', 'nidoran-m', 'nidorino', 'nidoking', 'clefairy', 'clefable', 'vulpix', 'ninetales', 'jigglypuff', 'wigglytuff', 'zubat', 'golbat', 'oddish', 'gloom', 'vileplume', 'paras', 'parasect', 'venonat', 'venomoth', 'diglett', 'dugtrio', 'meowth', 'persian', 'psyduck', 'golduck', 'mankey', 'primeape', 'growlithe', 'arcanine', 'poliwag', 'poliwhirl', 'poliwrath', 'abra', 'kadabra', 'alakazam', 'machop', 'machoke', 'machamp', 'bellsprout', 'weepinbell', 'victreebel', 'tentacool', 'tentacruel', 'geodude', 'graveler', 'golem', 'ponyta', 'rapidash', 'slowpoke', 'slowbro', 'magnemite', 'magneton', 'farfetchd', 'doduo', 'dodrio', 'seel', 'dewgong', 'grimer', 'muk', 'shellder', 'cloyster', 'gastly', 'haunter', 'gengar', 'onix', 'drowzee', 'hypno', 'krabby', 'kingler', 'voltorb', 'electrode', 'exeggcute', 'exeggutor', 'cubone', 'marowak', 'hitmonlee', 'hitmonchan', 'lickitung', 'koffing', 'weezing', 'rhyhorn', 'rhydon', 'chansey', 'tangela', 'kangaskhan', 'horsea', 'seadra', 'goldeen', 'seaking', 'staryu', 'starmie', 'mr-mime', 'scyther', 'jynx', 'electabuzz', 'magmar', 'pinsir', 'tauros', 'magikarp', 'gyarados', 'lapras', 'ditto', 'eevee', 'vaporeon', 'jolteon', 'flareon', 'porygon', 'omanyte', 'omastar', 'kabuto', 'kabutops', 'aerodactyl', 'snorlax', 'articuno', 'zapdos', 'moltres', 'dratini', 'dragonair', 'dragonite', 'mewtwo'];
+    
     $scope.markerType = 4;
     $scope.pokeId = 153;
     $scope.allow = false;
     $scope.showList = false;
     $scope.filterBool = false;
     $scope.showFilter = false;
-    $scope.showTypes = false;
     $scope.clickInstru = false;
     $scope.cancfirm = false;
     $scope.pokeInstru = false;
     $scope.clickable = true;
+
 
     $scope.heatShow = false;
     $scope.heatType = 0;
@@ -33,6 +36,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.filteredpokemon = [];
     //turn on searchbar only when going to map page
     $scope.searchbar = false;
+
    
     var d = new Date();
     d.setDate(d.getDate() - 1);
@@ -57,14 +61,13 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         anchor: [17, 34],
         scaledSize: [50, 50]
     };
-    
+    // images for pokemon... just images
     for (var i = 1; i < 151; i++) {
         $scope.pokemons.push({
             id: i,
             image: "../assets/images/pokemons/" + i + ".png"
         });
     }
-
     // for finding current location
     if (navigator.geolocation) {
         // turn searchbar to turn only on map load
@@ -84,9 +87,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                 anchor: [17, 34],
                 scaledSize: [50, 50]
             };
-            
-            $scope.pokemon.push({
-
+            $scope.pokemon.unshift({
                 pokeId: 0,
                 icon: icon,
                 title: "You're location",
@@ -153,6 +154,43 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             });
         }
     });
+    // function to let you add temporary markers to map
+    $scope.allowMarker = function() {
+        var allowTemp = $scope.allow;
+        var clickInstruTemp = $scope.clickInstru;
+        var pokeInstruTemp = $scope.pokeInstru;
+        var showListTemp = $scope.showList;
+        switchCancel();
+        if (allowTemp == false) {
+            $scope.allow = true;
+        }
+        if (clickInstruTemp == false) {
+            $scope.clickInstru = true;
+        }
+        if (pokeInstruTemp == false) {
+            $scope.pokeInstru = true;
+        }
+        if (showListTemp == false) {
+            $scope.showList = true;
+        }  
+    }
+    // switches markerType to the whichever parameter is inputted and removes temporary markers
+    // $scope.switchMarker = function(type) {
+    //     switchCancel();
+    //     $scope.markerType = type;
+    //     if ($scope.markerType == 0) {
+    //         
+    //         
+    //     }
+    // }
+    $scope.selectPokemon = function(type, poke) {
+        $scope.clickable = false;
+        $scope.markerType = type;
+        if (type == 0) {
+            $scope.pokeId = poke;
+            $scope.map.setOptions({draggableCursor: 'url(../assets/images/pokemons/'+ poke +'.png) 36 34, auto'});
+        }
+    }
     // adds temporary marker to map, parameters(event: lets you get the
     // clicked location coordinates, pokeId: pokemon id)
     $scope.addMarker = function(event) {
@@ -167,7 +205,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         
         var pos = [event.latLng.lat(), event.latLng.lng()]
         if ($scope.allow == true) {
-            console.log('here');
             if ($scope.markerType != 4) {
                 $scope.cancfirm = true;
                 $scope.clickable = false;
@@ -183,10 +220,10 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                     anchor: [17, 34],
                     scaledSize: [75, 75]
                 };
-
                 $scope.pokemon.push({
                     pokeId: $scope.pokeId,
                     icon: pokemonIcon,
+                    type: "pokemon",
                     title: "New Marker",
                     position: pos,
                     confirmed: false,
@@ -194,7 +231,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                 });
             }
             if ($scope.markerType == 1) {
-                console.log('here');
                 $scope.gyms.push({
                     icon: gymIcon,
                     title: "New Marker",
@@ -243,62 +279,162 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             }
             last.confirmed = true;
         }
-        $scope.allow = false;
-        switchCancel();
-    }
-    // function to let you add temporary markers to map
-    $scope.allowMarker = function() {
-        switchCancel();
-        $scope.allow = true;
-        $scope.showTypes = true;
-        
+        $scope.cancfirm = false;
+        $scope.pokeId = 153;
+        $scope.map.setOptions({draggableCursor: 'default'});
+        $scope.markerType = 4;
+
     }
     // disallows adding temporary markers to map and removes temporary markers
     $scope.cancelMarker = function() {
         switchCancel();
-        $scope.allow = false;
-    }
-    // switches markerType to the whichever parameter is inputted and removes temporary markers
-    $scope.switchMarker = function(type) {
-        switchCancel();
+        $scope.showList = true;
         $scope.clickInstru = true;
-        $scope.markerType = type;
-        if ($scope.markerType == 0) {
-            $scope.showList = true;
-            $scope.pokeInstru = true;
+        $scope.pokeInstru = true;
+    }
+    //** end of "addmarker" logic and user interaction
+
+    // when you click on a marker, we get data for infowindow and then display infowindow at marker location
+    $scope.markerInfo = function(e, marker) {
+        if (marker.pokeId != 0){
+            $scope.infoWindow = {createdAt: marker.createdAt, name: $scope.pokeNames[marker.pokeId], id: this.id, type: this.type};
+            $scope.map.showInfoWindow('foo-iw', this);
         }
     }
-    $scope.markerInfo = function(e, marker) {
-        $scope.infoWindow = {createdAt: marker.createdAt, name: $scope.pokeNames[marker.pokeId], id: this.id};
-        $scope.map.showInfoWindow('foo-iw', this);   
-    }
-    $scope.reportMarker = function(id) {
-        var marker = $scope.pokemon[id];
-        if (marker.type == "pokemon"){
-            console.log('here');
+    // button in infowindow, deletes marker.. logic needs overhaul
+    $scope.reportMarker = function(id, type) {
+        if (type == "pokemon"){
             if (id > -1) {
-                console.log(id);
+                var marker = $scope.pokemon[id];
                 $scope.pokemon.splice(id, 1);
                 mapFactory.removePokemon(marker.position[0], marker.position[1]);
             }
         }
-        if (marker.type == "gym") {
+        if (type == "gym") {
             if (id > -1) {
+                var marker = $scope.gyms[id];
+                console.log(marker);
                 $scope.gyms.splice(marker.id, 1);
+                mapFactory.removeGym(marker.position[0], marker.position[1]);
             }
         }
-        if (marker.type == "pokestop"){
+        if (type == "pokestop"){
             if (id > -1) {
+                var marker = $scope.pokestops[id];
                 $scope.pokestops.splice(marker.id, 1);
+                mapFactory.removePokestop(marker.position[0], marker.position[1]);
             }
         }
     }
-    $scope.selectPokemon = function(poke) {
-        $scope.pokeId = poke;
-        $scope.clickable = false;
-        $scope.map.setOptions({draggableCursor: 'url(../assets/images/pokemons/'+ poke +'.png) 36 34, auto'});
+    // filter logic.. need kenny to explain
+    $scope.toggleFilter = function() {
+        var sfilter = $scope.showFilter;
+        //$scope.showFilter = true
+        var bfilter = $scope.filterBool;
+        //$scope.filterBool = false
+        switchCancel();
+        if (sfilter == false) {
+            $scope.showFilter = true;
+        }
+        if (bfilter == true) {
+            $scope.filterBool = false;
+            $scope.pokeFilter = 0;
+        } else {
+            $scope.filterBool = true;
+            $scope.filteredpokemon.push($scope.ash);
+        }
     }
-    // $scope.toggleHeatMap = function(poke) {
+    // same as above
+    $scope.filterPoke = function(poke) {
+        // check if poke is in $scope.filteredpokemon array;
+        if (containsPoke(poke, $scope.filteredpokemon)) {
+            for (var i = 0; i < $scope.filteredpokemon.length; i++) {
+                if (poke == $scope.filteredpokemon[i].pokeId) {
+                    $scope.filteredpokemon.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+        // any poke that is in the $scope.pokemon array will be pushed to $scope.filteredpokemon array
+        else {
+            for (var i = 0; i < $scope.pokemon.length; i++) {
+                // compares poke.id with $scope.pokemon and pushes into $scope.filteredpokemon if matached
+                if (poke == $scope.pokemon[i].pokeId) {
+                    $scope.filteredpokemon.push($scope.pokemon[i]);
+                }
+            }     
+        }
+    }
+    // ditto
+    function containsPoke(x, array) {
+        for(var i = 0 ; i < array.length; i++) {
+            if(array[i].pokeId == x) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // test function for development purposes only
+    $scope.test = function() {
+        console.log($scope.map);
+    }
+    // helper function that removes the temporary markers; used in numerous other functions
+    // it sets the cursor image to default, makes markers clickable again, removes cancel and confirm buttons
+    // removes both instructions, turns off filter, removes filter selection, removes the types of markers buttons
+    // sets the markertype back to none of the 3, and the pokemon type for adding pokemon to the map back to nothing
+    // in summary, resets every value back to default (same as how it was on page load) except $scope.allow. also removes unconfirmed markers
+    function switchCancel() {
+        $scope.map.setOptions({draggableCursor: 'default'});
+        $scope.filteredpokemon = [];
+        $scope.clickable = true;
+        $scope.cancfirm = false;
+        $scope.clickInstru = false;
+        $scope.pokeInstru = false;
+        $scope.filterBool = false;
+        $scope.showFilter = false;
+        $scope.showList = false;
+        $scope.pokeId = 153;
+        if ($scope.markerType == 0) {
+            var last = $scope.pokemon[$scope.pokemon.length - 1];
+            if (last != undefined) {
+                if (last.confirmed == false) {
+                    $scope.pokemon.pop();
+                }
+            }
+        }
+        if ($scope.markerType == 1) {
+            var last = $scope.gyms[$scope.gyms.length - 1];
+            if (last != undefined) {
+                if (last.confirmed == false) {
+                    $scope.gyms.pop();
+                }
+            }
+        }
+        if ($scope.markerType == 2) {
+            var last = $scope.pokestops[$scope.pokestops.length - 1];
+            if (last != undefined) {
+                if (last.confirmed == false) {
+                    $scope.pokestops.pop();
+                }
+            }
+        }
+        $scope.markerType = 4;
+    }
+    // was used in current location function. may need to be re added to that function
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+      }
+
+    $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&library=places,visualization";
+
+    // deprecated code. should be saved somewhere else and removed from this page
+
+    // $scope.heatShow = false;
+    // $scope.heatType = 0;
+// $scope.toggleHeatMap = function(poke) {
     //     if ($scope.heatData.length < 1) {
     //         $scope.heatType = poke;
     //         for (var i = 0; i < $scope.pokemon.length; i++) {
@@ -336,115 +472,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     //     $scope.heatData.length = 0;
     //     heatmap.setMap(heatmap.getMap());
     // }
-    $scope.toggleFilter = function() {
-        var sfilter = $scope.showFilter;
-        //$scope.showFilter = true
-        var bfilter = $scope.filterBool;
-        //$scope.filterBool = false
-        switchCancel();
-        if (sfilter == false) {
-            $scope.showFilter = true;
-        }
-        if (bfilter == true) {
-            $scope.filterBool = false;
-            $scope.pokeFilter = 0;
-        } else {
-            $scope.filterBool = true;
-            $scope.filteredpokemon.push($scope.ash);
-        }
-    }
-    $scope.filterPoke = function(poke) {
-        // check if poke is in $scope.filteredpokemon array;
-        if (containsPoke(poke, $scope.filteredpokemon)) {
-            for (var i =0; i<$scope.filteredpokemon.length; i++) {
-                if (poke == $scope.filteredpokemon[i].pokeId) {
-                    $scope.filteredpokemon.splice(i, 1);
-                    i--;
-                }
-            }
-        }
-        // any poke that is in the $scope.pokemon array will be pushed to $scope.filteredpokemon array
-        else {
-            for ( var i=0; i< $scope.pokemon.length; i++) {
-                // compares poke.id with $scope.pokemon and pushes into $scope.filteredpokemon if matached
-                if (poke == $scope.pokemon[i].pokeId) {
-                    $scope.filteredpokemon.push($scope.pokemon[i]);
-                }
-            }     
-        }
-    }
-
-    function containsPoke(x, array){
-        for(var i=0 ; i<array.length; i++){
-            if(array[i].pokeId == x){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-
-    $scope.test = function() {
-        console.log($scope.text);
-    }
-    function testl() {
-       console.log('here');
-    }
-    // helper function that removes the temporary markers; used in numerous other functions
-    // it sets the cursor to default, makes markers clickable again, removes cancel and confrim buttons
-    // removes both instructions, turns off filter, removes filter selection, removes the types of markers buttons
-
-    function switchCancel() {
-        $scope.map.setOptions({draggableCursor: 'default'});
-        $scope.clickable = true;
-        $scope.filteredpokemon = [];
-        $scope.cancfirm = false;
-        $scope.clickInstru = false;
-        $scope.pokeInstru = false;
-        $scope.filterBool = false;
-        $scope.showFilter = false;
-        $scope.showTypes = false;
-        $scope.showList = false;
-        $scope.pokeId = 153;
-
-        $scope.heatShow = false;
-        if ($scope.markerType == 0) {
-            var last = $scope.pokemon[$scope.pokemon.length - 1];
-            if (last != undefined) {
-                if (last.confirmed == false) {
-                    $scope.pokemon.pop();
-                }
-            }
-        }
-        if ($scope.markerType == 1) {
-            var last = $scope.gyms[$scope.gyms.length - 1];
-            if (last != undefined) {
-                if (last.confirmed == false) {
-                    $scope.gyms.pop();
-                }
-            }
-        }
-        if ($scope.markerType == 2) {
-            var last = $scope.pokestops[$scope.pokestops.length - 1];
-            if (last != undefined) {
-                if (last.confirmed == false) {
-                    $scope.pokestops.pop();
-                }
-            }
-        }
-        $scope.markerType = 4;
-    }
-
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-            'Error: The Geolocation service failed.' :
-            'Error: Your browser doesn\'t support geolocation.');
-      }
-
-    $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&library=places,visualization";
-
 
 /************SEARCH BAR FOR POKEMON**********/
 // function DemoCtrl ($timeout, $q, $log) {
