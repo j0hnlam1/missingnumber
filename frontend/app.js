@@ -1,5 +1,6 @@
 var myApp = angular.module('Myapp', ["ngRoute",
-									 "ngMap", 
+									 "ngMap",
+									 "oc.lazyLoad", 
 									 "ngMapAutocomplete",
 									 "ngMaterial",
 									 "ngMessages",

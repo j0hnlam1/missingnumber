@@ -61,6 +61,8 @@
   margin: 0 auto; 
 }
 
-  /*background-color: yellow;*/
-
+/*for sign in google button*/
+#googlesignin{
+  display: inline-block;
+}
 
