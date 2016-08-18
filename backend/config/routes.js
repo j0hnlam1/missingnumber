@@ -2,6 +2,7 @@ var userController = require('./../controllers/users.js');
 var pokeController = require('./../controllers/pokemons.js');
 var gymController = require('./../controllers/gyms.js');
 var pokestopController = require('./../controllers/pokestops.js');
+var userController = require('./../controllers/users.js');
 
 module.exports = function(app){
 
@@ -32,5 +33,8 @@ module.exports = function(app){
     })
     app.get('/removePokemon/:lat/:lng', function(req, res) {
         pokestopController.remove(req, res);
+    })
+    app.post('/login', function(req, res) {
+        userController.login(req, res);
     })
 }
