@@ -9,7 +9,28 @@
 			  	 center="{{pos.lat}}, {{pos.lng}}" 
 			  	 zoom="13" 
 			  	 on-click="addMarker()"
-			  	 style ="height:600px">
+			  	 style ="[height:600px]"
+			  	 styles ="[
+		  	 		{
+	              		featureType: 'all',
+	              		stylers: [
+	              			{ saturation: -30 }
+	              		]
+					},{
+					    featureType: 'all',
+					    elementType: 'labels.icon',
+					    stylers: [
+							{ 'visibility': 'off' }
+					    ]
+					},{
+						featureType: 'all',
+					    elementType: 'geometry',
+					    stylers: [
+					      { 'visibility': 'simplified' }
+					    ]
+					}
+	             ]"
+	             >
 			  	 <heatmap-layer id="foo" data="heatData"></heatmap-layer>
 
 			  		<!-- The serach box -->
