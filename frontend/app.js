@@ -27,6 +27,14 @@ var myApp = angular.module('Myapp', ["ngRoute",
 			{
 				templateUrl: "partials/aboutus.html"
 			})
+			.when('/signin', 
+			{
+				templateUrl: "partials/signin.html"
+			})
+			.when('/register', 
+			{
+				templateUrl: "partials/register.html"
+			})
 			.otherwise({
 				redirectTo: "/"
 			});

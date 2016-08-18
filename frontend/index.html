@@ -32,9 +32,15 @@
     <base href="/">
     <link rel="stylesheet" type="text/css" href="./assets/stylesheets/homepage.css">
 
+
+    <!-- google+ login -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="859103378718-45q0ss75kr03ocgm4sgarbn81tn8kmrg.apps.googleusercontent.com">
+
 </head> 
 <body>
-
+     <div class="g-signin2" data-onsuccess="onSignIn"></div>
+     
     <!-- for cities searchbar -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <!-- need this line for the cities in the search bar -->
