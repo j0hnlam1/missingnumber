@@ -1,8 +1,8 @@
- <div class="row">
-    <div class="col-xs-12 text-center navbar navbar-default navbar-fixed-top">
-        <a href="#">Home</a> | 
-        <a href="#">Map</a> |
-        <a href="#">Chat</a> |
-        <a href="#">About Us</a> 
-    </div>
+<div class="collapse navbar-collapse" ng-controller="mapController">
+    <ul class="nav navbar-nav">
+        <li ng-class="{ active: isActive('/')}"><a href="/">Home</a></li>
+        <li ng-class="{ active: isActive('/map')}"><a href="/map">Map</a></li>
+        <li ng-class="{ active: isActive('/chat')}"><a href="/chat">Chat</a></li>
+        <li ng-class="{ active: isActive('/aboutus')}"><a href="/aboutus">About Us</a></li>
+    </ul>
 </div>
