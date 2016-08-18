@@ -13,7 +13,7 @@
 			  	 <heatmap-layer id="foo" data="heatData"></heatmap-layer>
 
 			  		<!-- The serach box -->
-			  		<map-autocomplete placeholder="{{ 'Type a place here...' }}" position="{{ google.maps.ControlPosition.TOP_LEFT }}" />
+			  		<map-autocomplete ng-if="searchbar" placeholder="{{ 'Type a place here...' }}" position="{{ google.maps.ControlPosition.TOP_LEFT }}" />
 			  		<marker ng-repeat="p in filteredpokemon track by $index"
 			  			ng-if="filterBool"
 			  			id="{{$index}}"
@@ -59,7 +59,7 @@
 			  		<info-window id="foo-iw">
         				<div ng-non-bindable="">
           					Name: {{infoWindow.name}}<br/>
-          					Date Created: {{infoWindow.createdAt}}<br/>
+          					Date Created: {{infoWindow.createdAt }}<br/>
           					<a href="#" ng-click="reportMarker(infoWindow.id)">Report</a>
         				</div>
      			 	</info-window>

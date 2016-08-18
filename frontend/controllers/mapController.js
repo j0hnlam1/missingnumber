@@ -31,6 +31,8 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.heatType = 0;
     // array used in filtering feature
     $scope.filteredpokemon = [];
+    //turn on searchbar only when going to map page
+    $scope.searchbar = false;
    
     var d = new Date();
     d.setDate(d.getDate() - 1);
@@ -65,6 +67,8 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
     // for finding current location
     if (navigator.geolocation) {
+        // turn searchbar to turn only on map load
+        $scope.searchbar = true;
         navigator.geolocation.getCurrentPosition(function(position) {
             var d = new Date();
             var n = d.toISOString();
@@ -99,6 +103,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                 createdAt: n
             }
             $scope.$apply();
+
         });
     }
     // db call for all pokemon
@@ -159,6 +164,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
         var d = new Date();
         var n = d.toISOString();
+        
         var pos = [event.latLng.lat(), event.latLng.lng()]
         if ($scope.allow == true) {
             console.log('here');

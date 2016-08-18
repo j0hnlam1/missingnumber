@@ -15,6 +15,18 @@ var myApp = angular.module('Myapp', ["ngRoute",
 				controller: 'mapController',
 				templateUrl: "partials/home.html"
 			})
+			.when('/chat', 
+			{
+				templateUrl: "partials/chat.html"
+			})
+			.when('/trade', 
+			{
+				templateUrl: "partials/trade.html"
+			})
+			.when('/aboutus', 
+			{
+				templateUrl: "partials/aboutus.html"
+			})
 			.otherwise({
 				redirectTo: "/"
 			});
