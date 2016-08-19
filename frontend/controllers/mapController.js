@@ -3,38 +3,12 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     var heatmap;
     $scope.user = {};
     $scope.login = null;
+
     NgMap.getMap('map').then(function(map) {
         $scope.map = map;
         heatmap = $scope.map.heatmapLayers.foo;
-        
     });
-    function onSignIn(googleUser) {
-        var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId());
-        var name = profile.getName();
-        var imageUrl = profile.getImageUrl();
-        var email = profile.getEmail();
-        $scope.login = profile.getId();
-        var user = ({name: name, imageUrl: imageUrl, email: email});
-        userFactory.login(user, function(user) {
-            $scope.user = user[0];
-        });
-        $scope.$digest();
 
-   }
-   function signOut() {
-        switchCancel();
-        $scope.allow = false;
-        $scope.login = null;
-        $scope.$digest();
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            console.log('User signed out.');
-        });
-    }
-    
-    window.onSignIn = onSignIn;
-    window.signOut = signOut;
     // allow: lets you add a tempory marker to map when true, markerType: 0 is pokemon, 1 is gyms,
     // 2 is pokestops, pokemon, gyms, pokestops: holds the data for all markers 
     // array used in filtering feature
@@ -180,9 +154,19 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
             });
         }
     });
+    function fuckyoukenny() {
+        userFactory.user(function(user, id) {
+            $scope.login = id
+            $scope.user = user[0];
+            if (id == null) {
+                switchCancel();
+                $scope.allow = false;
+            }
+        })
+    }
     // function to let you add temporary markers to map
     $scope.allowMarker = function() {
-        console.log($scope.allow);
+        fuckyoukenny();
         if ($scope.login != null) {
             var allowTemp = $scope.allow;
             var clickInstruTemp = $scope.clickInstru;
@@ -215,6 +199,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     //     }
     // }
     $scope.selectPokemon = function(type, poke) {
+        fuckyoukenny();
         $scope.clickable = false;
         $scope.markerType = type;
         if (type == 0) {
@@ -225,6 +210,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     // adds temporary marker to map, parameters(event: lets you get the
     // clicked location coordinates, pokeId: pokemon id)
     $scope.addMarker = function(event) {
+        fuckyoukenny();
         var tempId = $scope.pokeId;
         var tempType = $scope.markerType;
         switchCancel();
@@ -283,6 +269,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
     // adds temporary markers to db making them permanent markers
     $scope.confirmMarker = function() {
+        fuckyoukenny();
         if ($scope.markerType == 0) {
             var last = $scope.pokemon[$scope.pokemon.length - 1];
             if (last != undefined) {
@@ -318,6 +305,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
     // disallows adding temporary markers to map and removes temporary markers
     $scope.cancelMarker = function() {
+        fuckyoukenny();
         switchCancel();
         $scope.showList = true;
         $scope.clickInstru = true;
@@ -327,6 +315,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
     // when you click on a marker, we get data for infowindow and then display infowindow at marker location
     $scope.markerInfo = function(e, marker) {
+        fuckyoukenny();
         if (marker.pokeId != 0){
             $scope.infoWindow = {createdAt: marker.createdAt, name: $scope.pokeNames[marker.pokeId], id: this.id, type: this.type};
             $scope.map.showInfoWindow('foo-iw', this);
@@ -334,6 +323,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
     // button in infowindow, deletes marker.. logic needs overhaul
     $scope.reportMarker = function(id, type) {
+        fuckyoukenny();
         if (type == "pokemon"){
             if (id > -1) {
                 var marker = $scope.pokemon[id];
@@ -359,6 +349,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
     // filter logic.. need kenny to explain
     $scope.toggleFilter = function() {
+        fuckyoukenny();
         var sfilter = $scope.showFilter;
         //$scope.showFilter = true
         var bfilter = $scope.filterBool;
@@ -377,6 +368,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
     // same as above
     $scope.filterPoke = function(poke) {
+        fuckyoukenny();
         // check if poke is in $scope.filteredpokemon array;
         if (containsPoke(poke, $scope.filteredpokemon)) {
             for (var i = 0; i < $scope.filteredpokemon.length; i++) {
@@ -398,6 +390,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
     // ditto
     function containsPoke(x, array) {
+        fuckyoukenny();
         for(var i = 0 ; i < array.length; i++) {
             if(array[i].pokeId == x) {
                 return true;

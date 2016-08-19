@@ -20,7 +20,7 @@ module.exports = (function() {
 								console.log(err);
 							} else {
 								// create new user
-								res.json(results);
+								res.json(req.body);
 							}
 						})
 					}
