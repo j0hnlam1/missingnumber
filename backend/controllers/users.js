@@ -15,7 +15,7 @@ module.exports = (function() {
 						// user has account already
 						res.json(results);
 					} else {
-						User.create({name: req.body.name, email: req.body.email, imageUrl: req.body.imageUrl}, function(req, res) {
+						User.create({name: req.body.name, email: req.body.email, imageUrl: req.body.imageUrl}, function(err, results) {
 							if (err) {
 								console.log(err);
 							} else {

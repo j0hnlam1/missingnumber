@@ -1,12 +1,40 @@
-myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFactory, $location) {
+myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFactory, userFactory, $location) {
     // initiates google map
     var heatmap;
+    $scope.user = {};
+    $scope.login = null;
     NgMap.getMap('map').then(function(map) {
         $scope.map = map;
         heatmap = $scope.map.heatmapLayers.foo;
         
     });
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId());
+        var name = profile.getName();
+        var imageUrl = profile.getImageUrl();
+        var email = profile.getEmail();
+        $scope.login = profile.getId();
+        var user = ({name: name, imageUrl: imageUrl, email: email});
+        userFactory.login(user, function(user) {
+            $scope.user = user[0];
+        });
+        $scope.$digest();
+
+   }
+   function signOut() {
+        switchCancel();
+        $scope.allow = false;
+        $scope.login = null;
+        $scope.$digest();
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('User signed out.');
+        });
+    }
     
+    window.onSignIn = onSignIn;
+    window.signOut = signOut;
     // allow: lets you add a tempory marker to map when true, markerType: 0 is pokemon, 1 is gyms,
     // 2 is pokestops, pokemon, gyms, pokestops: holds the data for all markers 
     // array used in filtering feature
@@ -17,7 +45,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.pokestops = [];
     $scope.pokemons = [];
     $scope.pokeNames = ['ash', 'bulbasaur', 'ivysaur', 'venusaur', 'charmander', 'charmeleon', 'charizard', 'squirtle', 'wartortle', 'blastoise', 'caterpie', 'metapod', 'butterfree', 'weedle', 'kakuna', 'beedrill', 'pidgey', 'pidgeotto', 'pidgeot', 'rattata', 'raticate', 'spearow', 'fearow', 'ekans', 'arbok', 'pikachu', 'raichu', 'sandshrew', 'sandslash', 'nidoran-f', 'nidorina', 'nidoqueen', 'nidoran-m', 'nidorino', 'nidoking', 'clefairy', 'clefable', 'vulpix', 'ninetales', 'jigglypuff', 'wigglytuff', 'zubat', 'golbat', 'oddish', 'gloom', 'vileplume', 'paras', 'parasect', 'venonat', 'venomoth', 'diglett', 'dugtrio', 'meowth', 'persian', 'psyduck', 'golduck', 'mankey', 'primeape', 'growlithe', 'arcanine', 'poliwag', 'poliwhirl', 'poliwrath', 'abra', 'kadabra', 'alakazam', 'machop', 'machoke', 'machamp', 'bellsprout', 'weepinbell', 'victreebel', 'tentacool', 'tentacruel', 'geodude', 'graveler', 'golem', 'ponyta', 'rapidash', 'slowpoke', 'slowbro', 'magnemite', 'magneton', 'farfetchd', 'doduo', 'dodrio', 'seel', 'dewgong', 'grimer', 'muk', 'shellder', 'cloyster', 'gastly', 'haunter', 'gengar', 'onix', 'drowzee', 'hypno', 'krabby', 'kingler', 'voltorb', 'electrode', 'exeggcute', 'exeggutor', 'cubone', 'marowak', 'hitmonlee', 'hitmonchan', 'lickitung', 'koffing', 'weezing', 'rhyhorn', 'rhydon', 'chansey', 'tangela', 'kangaskhan', 'horsea', 'seadra', 'goldeen', 'seaking', 'staryu', 'starmie', 'mr-mime', 'scyther', 'jynx', 'electabuzz', 'magmar', 'pinsir', 'tauros', 'magikarp', 'gyarados', 'lapras', 'ditto', 'eevee', 'vaporeon', 'jolteon', 'flareon', 'porygon', 'omanyte', 'omastar', 'kabuto', 'kabutops', 'aerodactyl', 'snorlax', 'articuno', 'zapdos', 'moltres', 'dratini', 'dragonair', 'dragonite', 'mewtwo'];
-    
     $scope.markerType = 4;
     $scope.pokeId = 153;
     $scope.allow = false;
@@ -104,7 +131,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
                 createdAt: n
             }
             $scope.$apply();
-
         });
     }
     // db call for all pokemon
@@ -156,23 +182,28 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     });
     // function to let you add temporary markers to map
     $scope.allowMarker = function() {
-        var allowTemp = $scope.allow;
-        var clickInstruTemp = $scope.clickInstru;
-        var pokeInstruTemp = $scope.pokeInstru;
-        var showListTemp = $scope.showList;
-        switchCancel();
-        if (allowTemp == false) {
-            $scope.allow = true;
+        console.log($scope.allow);
+        if ($scope.login != null) {
+            var allowTemp = $scope.allow;
+            var clickInstruTemp = $scope.clickInstru;
+            var pokeInstruTemp = $scope.pokeInstru;
+            var showListTemp = $scope.showList;
+            switchCancel();
+            if (allowTemp == false) {
+                $scope.allow = true;
+            }
+            if (clickInstruTemp == false) {
+                $scope.clickInstru = true;
+            }
+            if (pokeInstruTemp == false) {
+                $scope.pokeInstru = true;
+            }
+            if (showListTemp == false) {
+                $scope.showList = true;
+            }
+        } else {
+            console.log("notloggedin");
         }
-        if (clickInstruTemp == false) {
-            $scope.clickInstru = true;
-        }
-        if (pokeInstruTemp == false) {
-            $scope.pokeInstru = true;
-        }
-        if (showListTemp == false) {
-            $scope.showList = true;
-        }  
     }
     // switches markerType to the whichever parameter is inputted and removes temporary markers
     // $scope.switchMarker = function(type) {
@@ -376,7 +407,10 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     }
     // test function for development purposes only
     $scope.test = function() {
-        console.log($scope.map);
+        console.log($scope.user);
+    }
+    function test() {
+        console.log('yo');
     }
     // helper function that removes the temporary markers; used in numerous other functions
     // it sets the cursor image to default, makes markers clickable again, removes cancel and confirm buttons
