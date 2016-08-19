@@ -37,7 +37,6 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
     $scope.filteredpokemon = [];
     //turn on searchbar only when going to map page
     $scope.searchbar = false;
-
    
     var d = new Date();
     d.setDate(d.getDate() - 1);

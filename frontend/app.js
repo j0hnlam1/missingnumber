@@ -37,6 +37,7 @@ var myApp = angular.module('Myapp', ["ngRoute",
 			{
 				templateUrl: "partials/register.html"
 			})
+			
 			.otherwise({
 				redirectTo: "/"
 			});
