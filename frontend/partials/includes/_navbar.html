@@ -1,6 +1,6 @@
 <div class="collapse navbar-collapse" ng-controller="mapController">
     <ul class="nav navbar-nav">
-        <li ng-class="{ active: isActive('/map')}"><a href="/">Map</a></li>
+        <li ng-class="{ active: isActive('/')}"><a href="/">Map</a></li>
         <li ng-class="{ active: isActive('/chat')}"><a href="/chat">Chat</a></li>
         <li ng-class="{ active: isActive('/trade')}"><a href="/trade">Trade</a></li>
         <li ng-class="{ active: isActive('/aboutus')}"><a href="/aboutus">About Us</a></li>
@@ -8,7 +8,10 @@
    
     <ul class="pull-right">
         <div class="g-signin2" data-onsuccess="onSignIn" id="googlesignin"></div>
-        <a href="#" ng-click="signOut()">Sign out</a>
+
+        
+        <a href="#" ng-click="signOut()"><button class="btn btn-danger">Sign out</button></a>
+            
     </ul>
 
 </div>
