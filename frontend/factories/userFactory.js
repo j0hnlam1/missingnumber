@@ -17,5 +17,10 @@ myApp.factory('userFactory', function($http){
 	factory.user = function(callback) {
 		callback(userInfo, login);
 	}
+
+	//check to see if user is logged in
+	factory.getUser = function(callback){
+		callback(userInfo);
+	}
 	return factory;
 })
