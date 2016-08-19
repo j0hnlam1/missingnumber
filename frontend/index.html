@@ -2,6 +2,7 @@
 <html ng-app = 'Myapp'>
 <head>
     <title>Missingno</title>
+    <base href="/" />
 
     <!-- ANGULAR, ANGULAR ROUTE, BOOTSTRAP CSS-->
     <script src="./library/bower_components/angular/angular.min.js"/></script>
@@ -27,14 +28,16 @@
     <script src='app.js'></script>
     <script src = "controllers/mapController.js"></script>
     <script src = "controllers/userController.js"></script>
+    <script src = "controllers/aboutusController.js"></script>
     <script src = "factories/userFactory.js"></script>
     <script src = "factories/mapFactory.js"></script>
-    <base href="/">
+
     <link rel="stylesheet" type="text/css" href="./assets/stylesheets/homepage.css">
 
 
     <!-- google+ login -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="./library/bower_components/oclazyload/dist/ocLazyLoad.min.js"></script>
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
     <meta name="google-signin-client_id" content="859103378718-45q0ss75kr03ocgm4sgarbn81tn8kmrg.apps.googleusercontent.com">
 
 </head> 
@@ -44,7 +47,6 @@
         <div class="g-signin2" data-onsuccess="onSignIn"></div>
         <div onclick="signOut();">Sign out</div>
 </div>
-   
 
     <!-- for cities searchbar -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
@@ -58,7 +60,7 @@
 
 
 
-    <div ng-include="'partials/includes/_navbar.html'"></div>
+    <div ng-controller="userController" ng-include="'partials/includes/_navbar.html'"></div>
     <div ng-view></div>
 
 </body>
