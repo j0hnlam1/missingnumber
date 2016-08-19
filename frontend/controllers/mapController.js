@@ -9,6 +9,18 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
         heatmap = $scope.map.heatmapLayers.foo;
     });
 
+
+    //check if user is logout in
+    userFactory.getUser(function(data) {
+        if (data.name) {
+            $scope.user = data;
+            // turn on and off showlist here
+        } else {
+            // User is not logg in
+            $scope.user = null;
+        }
+    })
+
     // allow: lets you add a tempory marker to map when true, markerType: 0 is pokemon, 1 is gyms,
     // 2 is pokestops, pokemon, gyms, pokestops: holds the data for all markers 
     // array used in filtering feature

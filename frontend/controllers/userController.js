@@ -26,6 +26,7 @@ myApp.controller('userController', function($scope, $routeParams, $location, $oc
             console.log('User signed out.');
         });
         userFactory.logout();
+        $location.path('/map');
     }
     window.onSignIn = onSignIn;
     window.signOut = signOut;
