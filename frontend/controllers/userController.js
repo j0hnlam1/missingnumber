@@ -1,5 +1,28 @@
-myApp.controller('userController', function($scope, $routeParams, $location, $route, $ocLazyLoad, userFactory){
-	
+(function(){
+  'use_strict';
+  angular
+    .module('Myapp')
+    .controller('userController', userController);
+
+
+function userController($scope, $routeParams, $route, $location, $ocLazyLoad, userFactory){
+
+
+  /*********************** navbar stuffs ***********************/
+
+  $scope.isActive = function (viewLocation) { 
+          return viewLocation === $location.path();
+  };
+  
+  $scope.loginbutton = true;
+  // shows goggle sign in button
+  $scope.logoutbutton = false;
+  // shows logout button if signed in
+  $scope.user = {};
+  // displays logged in users info
+  
+  /********************** end of navbar stuffs *****************/
+
 	var userInfo = {};
     var login = null;
 
@@ -18,6 +41,9 @@ myApp.controller('userController', function($scope, $routeParams, $location, $ro
         var user = ({name: name, imageUrl: imageUrl, email: email});
         userFactory.login(user, login, function(user) {
             userInfo = user[0];
+            $scope.user = userInfo;
+            $scope.loginbutton = false;
+            $scope.logoutbutton = true;
         });
    }
    function signOut() {
@@ -26,11 +52,13 @@ myApp.controller('userController', function($scope, $routeParams, $location, $ro
             console.log('User signed out.');
         });
         userFactory.logout();
-        console.log("hello");
+        $scope.loginbutton = true;
+        $scope.logoutbutton = false;
+
         $route.reload();
     }
     window.onSignIn = onSignIn;
     window.signOut = signOut;
 
-   
-})
+   }
+})();

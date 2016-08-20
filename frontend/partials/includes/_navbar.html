@@ -1,4 +1,4 @@
-<div class="collapse navbar-collapse" ng-controller="mapController">
+<div class="collapse navbar-collapse">
     <ul class="nav navbar-nav">
         <li ng-class="{ active: isActive('/')}"><a href="/">Map</a></li>
         <li ng-class="{ active: isActive('/chat')}"><a href="/chat">Chat</a></li>
@@ -6,13 +6,10 @@
         <li ng-class="{ active: isActive('/aboutus')}"><a href="/aboutus">About Us</a></li>
     </ul>
    
-    <!-- <ul class="pull-right"> -->
-        <!-- <div class="g-signin2" data-onsuccess="onSignIn" id="googlesignin"></div> -->
-
-        
-        <!-- <a href="#" ng-click="signOut()"><button class="btn btn-danger">Sign out</button></a> -->
-            
-    <!-- </ul> -->
-
+<div ng-controller="userController" class="pull-right">
+        <div ng-show="loginbutton" class="g-signin2" data-onsuccess="onSignIn" id="login"></div>
+        <h4 ng-show="logoutbutton" id="greetings">Hello, {{user.name}} &nbsp&nbsp&nbsp</h4>
+        <div ng-show="logoutbutton" onclick="signOut();" id="logout" ><button class="btn btn-danger">Sign out</button></div>
+</div>
 </div>
    
