@@ -12,6 +12,7 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
 
     //check if user is logout in
     userFactory.getUser(function(data) {
+        console.log(data);
         if (data.name) {
             $scope.user = data;
             // turn on and off showlist here
@@ -468,6 +469,25 @@ myApp.controller('mapController', function($scope, $routeParams, NgMap, mapFacto
       }
 
     $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&library=places,visualization";
+
+// $scope.changeColor = function(poke, bool) {
+//     if(bool === true) {
+//         $scope.pokeColor = {"background-color": 'green'};
+//     } else if (bool === false) {
+//         $scope.pokeColor = {"background-color": 'white'}; //or, whatever the original color is
+//     }
+// };
+$scope.changeColor = function(poke, bool) {
+    if(bool === true) {
+        console.log(poke);
+        $scope.pokeColor = {"background-color": 'green'};
+        // console.log($scope.pokeColor);
+    } else if (bool === false) {
+        $scope.pokeColor = {color: 'white'}; //or, whatever the original color is
+    }
+};
+
+
 
     // deprecated code. should be saved somewhere else and removed from this page
 

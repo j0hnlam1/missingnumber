@@ -92,9 +92,9 @@
 		</div>
 		<div class="col-md-4">
 			<div class="row">
-				<div class='topBut' ng-click='allowMarker()'>Add Pokemon</div>
+				<div class='topBut btn btn-primary' ng-click='allowMarker()'>Add Pokemon</div>
 					<!-- clicking allowmarker turns showTypes true -->
-				<div class='topBut' ng-click='toggleFilter()'>Filter On/Off</div>
+				<div class='topBut btn btn-danger' ng-click='toggleFilter()'>Filter On/Off</div>
 					<!-- clicking toggleFilter turns showFilter true -->
 			</div>
 
@@ -116,12 +116,18 @@
 						<!-- changes markerType to pokestop -->
 						<img class='grid' src='./assets/images/pokestop.png'>
 					</div>
+
+
+					
+					
+
+
 				</div>
 				<div class='grid' 
 					ng-repeat='poke in pokemons'
 					style="display: inline-block; border: 1px solid black;"
-					ng-click="selectPokemon(0, poke.id)"><img class='grid' ng-src="{{poke.image}}"
-					>
+					ng-click="selectPokemon(0, poke.id)">
+					<img class='grid' ng-src="{{poke.image}}">
 				</div>
 			</div>
 			<div id='pokeFilter' ng-show='showFilter'>

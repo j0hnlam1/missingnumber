@@ -1,4 +1,4 @@
-myApp.controller('userController', function($scope, $routeParams, $location, $ocLazyLoad, userFactory){
+myApp.controller('userController', function($scope, $routeParams, $location, $route, $ocLazyLoad, userFactory){
 	
 	var userInfo = {};
     var login = null;
@@ -26,7 +26,8 @@ myApp.controller('userController', function($scope, $routeParams, $location, $oc
             console.log('User signed out.');
         });
         userFactory.logout();
-        $location.path('/map');
+        console.log("hello");
+        $route.reload();
     }
     window.onSignIn = onSignIn;
     window.signOut = signOut;

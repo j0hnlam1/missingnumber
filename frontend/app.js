@@ -16,11 +16,6 @@ var myApp = angular.module('Myapp', ["ngRoute",
 				controller: 'mapController',
 				templateUrl: "partials/home.html"
 			})
-			.when('/map', 
-			{
-				controller: 'mapController',
-				templateUrl: "partials/home.html"
-			})
 			.when('/chat', 
 			{
 				templateUrl: "partials/chat.html"
