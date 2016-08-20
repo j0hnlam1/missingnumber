@@ -11,14 +11,10 @@ var myApp = angular.module('Myapp', ["ngRoute",
 	myApp.config(function($routeProvider, $locationProvider){
 
 		$routeProvider
-			.when('/', 
-			{
-				controller: 'mapController',
-				templateUrl: "partials/home.html"
-			})
 			.when('/map', 
 			{
 				controller: 'mapController',
+				controllerAs: 'mapCtrl',
 				templateUrl: "partials/home.html"
 			})
 			.when('/chat', 
@@ -42,9 +38,8 @@ var myApp = angular.module('Myapp', ["ngRoute",
 			{
 				templateUrl: "partials/register.html"
 			})
-			
 			.otherwise({
-				redirectTo: "/"
+				redirectTo: "/map"
 			});
 
 		 //check browser support

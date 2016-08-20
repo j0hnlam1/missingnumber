@@ -37,4 +37,13 @@ module.exports = function(app){
     app.post('/login', function(req, res) {
         userController.login(req, res);
     })
+    app.post('/addPokeVote', function(req, res) {
+        pokeController.vote(req, res);
+    })
+    app.post('/addGymVote', function(req, res) {
+        gymController.vote(req, res);
+    })
+    app.post('/addPokestopVote', function(req, res) {
+        pokestopController.vote(req, res);
+    })
 }

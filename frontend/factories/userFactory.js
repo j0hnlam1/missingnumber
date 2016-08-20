@@ -9,10 +9,9 @@ myApp.factory('userFactory', function($http){
 			callback(output);
         })
 	}
-	factory.logout = function(callback) {
+	factory.logout = function() {
 		userInfo = {};
 		login = null;
-		callback();
 	}
 	factory.user = function(callback) {
 		callback(userInfo, login);

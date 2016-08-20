@@ -1,4 +1,11 @@
-myApp.controller('userController', function($scope, $routeParams, $location, $ocLazyLoad, userFactory){
+(function(){
+  'use_strict';
+  angular
+    .module('Myapp')
+    .controller('userController', userController);
+
+
+function userController($scope, $routeParams, $route, $location, $ocLazyLoad, userFactory){
 	
 	var userInfo = {};
     var login = null;
@@ -26,10 +33,10 @@ myApp.controller('userController', function($scope, $routeParams, $location, $oc
             console.log('User signed out.');
         });
         userFactory.logout();
-        $location.path('/map');
+        $route.reload();
     }
     window.onSignIn = onSignIn;
     window.signOut = signOut;
 
-   
-})
+   }
+})();
