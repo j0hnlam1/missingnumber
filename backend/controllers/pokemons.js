@@ -105,13 +105,38 @@ module.exports = (function() {
 								}
 							})
 
-						} 
+						} else {
+							console.log('here');
+							pokemon.votes.count = pokemon.votes.count - 1;
+							var index = pokemon.votes.up.indexOf(req.body.user);
+							pokemon.votes.up.splice(index, 1);
+							pokemon.save(function(err, results) {
+								if (err) {
+									console.log(err);
+								} else {
+									res.json(results);
+								}
+							})
+
+						}
 					} else {
 						if (req.body.type == 0) {
 							pokemon.votes.count = pokemon.votes.count + 2;
 							var upusers = pokemon.votes.up;
 							upusers.push(req.body.user);
 							pokemon.votes.up = upusers;
+							var index = pokemon.votes.down.indexOf(req.body.user);
+							pokemon.votes.down.splice(index, 1);
+							pokemon.save(function(err, results) {
+								if (err) {
+									console.log(err);
+								} else {
+									res.json(results);
+								}
+							})
+						} else {
+							console.log('here');
+							pokemon.votes.count = pokemon.votes.count + 1;
 							var index = pokemon.votes.down.indexOf(req.body.user);
 							pokemon.votes.down.splice(index, 1);
 							pokemon.save(function(err, results) {

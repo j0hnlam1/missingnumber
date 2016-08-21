@@ -161,6 +161,7 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     });
     // function to let you add temporary markers to map
     $scope.allowMarker = function() {
+        document.getElementsByClassName("add")[$scope.highlighted].style.background = "white";
         fuckyoukenny();
         if ($scope.login != null) {
             var allowTemp = $scope.allow;
