@@ -12,7 +12,6 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     });
     //check if user is logged in
     userFactory.getUser(function(data) {
-        console.log(data);
         if (data.name) {
             $scope.user = data;
         }
@@ -72,7 +71,6 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     }
     // for finding current location
     if (navigator.geolocation) {
-        console.log("hello");
         // turn searchbar to turn only on map load
         $scope.searchbar = true;
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -321,8 +319,9 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     // when you click on a marker, we get data for infowindow and then display infowindow at marker location
     $scope.markerInfo = function(e, marker) {
         fuckyoukenny();
+        var date = cleanDate(marker.createdAt);
         if (marker.pokeId != 0){
-            $scope.infoWindow = {createdAt: marker.createdAt, name: $scope.pokeNames[marker.pokeId], id: this.id, type: this.type, count: marker.count};
+            $scope.infoWindow = {createdAt: date, name: $scope.pokeNames[marker.pokeId], id: this.id, type: this.type, count: marker.count};
             $scope.map.showInfoWindow('foo-iw', this);
         }
     }
@@ -466,6 +465,30 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
             }
         }
         $scope.markerType = 4;
+    }
+    // accepts an iso date and outputs a clean user friendly date.
+    // example: 2016-08-20T02:33:53.438Z is input, 7/19/16, 7:33PM is output
+    function cleanDate(input) {
+        var x = new Date(input);
+        var month = x.getMonth();
+        var day = x.getDate();
+        var minute = x.getMinutes();
+        if (minute < 10) {
+            minute = "0" + minute;
+        }
+        var hour = x.getHours();
+        var year = x.getFullYear();
+        year = year.toString().substr(2,2);
+        if (hour > 12) {
+            date = month + "/" + day + "/" + year + ", " + (hour - 12) + ":" + minute + "PM";
+        } else if (hour > 0 && hour < 12) {
+            date = month + "/" + day + "/" + year + ", " + hour + ":" + minute + "AM";
+        } else if (hour == 12) {
+            date = month + "/" + day + "/" + year + ", " + hour + ":" + minute + "PM";
+        } else {
+            date = month + "/" + day + "/" + year + ", " + (hour + 12) + ":" + minute + "AM";
+        }
+        return date;
     }
     // was used in current location function. may need to be re added to that function
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
