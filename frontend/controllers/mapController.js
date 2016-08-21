@@ -386,8 +386,10 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
 
 
     // same as above
-    $scope.toggle = true;
+    $scope.filteredType = [];
     $scope.filterPoke = function(poke) {
+        // console.log(this);
+        // console.log($scope.filteredpokemon);
         // check if poke is in $scope.filteredpokemon array;
         if (containsPoke(poke, $scope.filteredpokemon)) {
             for (var i = 0; i < $scope.filteredpokemon.length; i++) {
@@ -406,18 +408,27 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                 }
             }     
         }
-        
-        if ( $scope.toggle ){
-
-            document.getElementsByClassName("color")[this.$index].style.background = "blue";
-            $scope.toggle = false;
-        } else {
-            document.getElementsByClassName("color")[this.$index].style.background = "white";
-            $scope.toggle = true;
+        var bool = false;
+        for (var i = 0; i < $scope.filteredType.length; i++) {
+            if ($scope.filteredType[i] == poke) {
+                $scope.filteredType.splice(i, 1);
+                bool = true;
+            }
         }
+        if (bool == false) {
+            $scope.filteredType.push(poke);
+        }
+        checkFilterHighlight();
     }
 
-
+    function checkFilterHighlight() {
+        for (var k = 0; k < 150; k++) {
+            document.getElementsByClassName("color")[k].style.background = "white";
+        }
+        for (var j = 0; j < $scope.filteredType.length; j++) {
+            document.getElementsByClassName("color")[$scope.filteredType[j] - 1].style.background = "blue";
+        }
+    }
 
 
 
@@ -456,6 +467,8 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     // sets the markertype back to none of the 3, and the pokemon type for adding pokemon to the map back to nothing
     // in summary, resets every value back to default (same as how it was on page load) except $scope.allow. also removes unconfirmed markers
     function switchCancel() {
+        checkFilterHighlight();
+        $scope.filteredType = [];
         $scope.map.setOptions({draggableCursor: 'default'});
         $scope.filteredpokemon = [];
         $scope.clickable = true;
