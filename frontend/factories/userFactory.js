@@ -11,11 +11,16 @@ myApp.factory('userFactory', function($http){
 			userInfo = output;
 			// console.log("logging user", userInfo);
 			currentusers.push(userInfo[0]);
+			console.log(currentusers, "user factrory");
 			login = id;
 			callback(output);
         })
 	}
 	factory.logout = function() {
+		//does this splice work?
+		console.log(currentusers);
+		console.log(userInfo);
+		currentusers.splice(userInfo, 1);
 		userInfo = {};
 		login = null;
 	}
