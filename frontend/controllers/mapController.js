@@ -387,7 +387,7 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
 
 
     // same as above
-    $scope.toggle = true;
+    // $scope.toggle = true;
     $scope.filterPoke = function(poke) {
         // check if poke is in $scope.filteredpokemon array;
         if (containsPoke(poke, $scope.filteredpokemon)) {
@@ -408,14 +408,13 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
             }     
         }
         
-        if ( $scope.toggle ){
-
-            document.getElementsByClassName("color")[this.$index].style.background = "blue";
-            $scope.toggle = false;
-        } else {
-            document.getElementsByClassName("color")[this.$index].style.background = "white";
-            $scope.toggle = true;
-        }
+        // if ( $scope.toggle ){
+        //     document.getElementsByClassName("color")[this.$index].style.background = "blue";
+        //     $scope.toggle = false;
+        // } else {
+        //     document.getElementsByClassName("color")[this.$index].style.background = "white";
+        //     $scope.toggle = true;
+        // }
     }
 
 
@@ -423,7 +422,7 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
 
 
 
-    
+
     // ditto
     function containsPoke(x, array) {
         for(var i = 0 ; i < array.length; i++) {
