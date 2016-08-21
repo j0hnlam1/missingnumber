@@ -1,0 +1,13 @@
+#userslist{
+	border: 1px solid black;
+	height: 500px;
+}
+#chatroom{
+	border: 1px solid black;
+	height: 500px;
+	overflow-y: scroll;	
+}
+#chatpage{
+	margin: 20px 0px 20px 0px;
+
+}

@@ -1,1 +1,15 @@
-<h1>UNDER CONSTRUCTION</h1>
+<div class="container">
+	<div class="row" id="chatpage">
+		<div class="col-xs-2" id="userslist">
+			<h4>Trainers</h4>
+			<h6 ng-repeat="user in allUsers">{{user.name}}</h6>
+		</div>
+		<div class="col-xs-10" id="chatroom" overflow="scroll">
+
+		</div>
+	</div>
+	<div class="row text-center">
+		<textarea rows="5" cols="60">{{user[0].name}}</textarea>
+		<button class="btn btn-primary">Submit</button>
+	</div>
+</div>

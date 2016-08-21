@@ -29,6 +29,14 @@ app.all('/trade', function(req, res, next) {
 require('./backend/config/db.js');
 require('./backend/config/routes.js')(app);
 
-app.listen(8000, function(){
-	console.log('listening port 8000.....');
+// app.listen(8000, function(){
+// 	console.log('listening port 8000.....');
+// })
+
+var server = app.listen(8000, function(){
+	console.log('now listening to port 8000');
+	console.log('chat room');
 })
+var io = require('socket.io').listen(server);
+// var users = {};
+// var messages = [];
