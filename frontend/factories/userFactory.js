@@ -28,7 +28,7 @@ myApp.factory('userFactory', function($http){
 		callback(userInfo);
 	}
 
-	//get all logged in users
+	//get all logged in users for chatroom
 	factory.getAllUsers = function(callback){
 		callback(currentusers);
 	}
