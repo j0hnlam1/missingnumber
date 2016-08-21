@@ -159,7 +159,6 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     });
     // function to let you add temporary markers to map
     $scope.allowMarker = function() {
-        document.getElementsByClassName("add")[$scope.highlighted].style.background = "white";
         fuckyoukenny();
         if ($scope.login != null) {
             var allowTemp = $scope.allow;
@@ -382,7 +381,12 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
             $scope.filteredpokemon.push($scope.ash);
         }
     }
+
+
+
+
     // same as above
+    $scope.toggle = true;
     $scope.filterPoke = function(poke) {
         // check if poke is in $scope.filteredpokemon array;
         if (containsPoke(poke, $scope.filteredpokemon)) {
@@ -402,7 +406,23 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                 }
             }     
         }
+        
+        if ( $scope.toggle ){
+
+            document.getElementsByClassName("color")[this.$index].style.background = "blue";
+            $scope.toggle = false;
+        } else {
+            document.getElementsByClassName("color")[this.$index].style.background = "white";
+            $scope.toggle = true;
+        }
     }
+
+
+
+
+
+
+    
     // ditto
     function containsPoke(x, array) {
         for(var i = 0 ; i < array.length; i++) {

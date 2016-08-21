@@ -133,11 +133,12 @@
 				</div>
 			</div>
 			<div id='pokeFilter' ng-show='showFilter'>
-				<div class='grid'
+				<div class='grid color'
 					ng-repeat='poke in pokemons'
 					style="display: inline-block; border: 1px solid black;"
 					ng-click="filterPoke(poke.id)">
-					<img class='grid' ng-src="{{poke.image}}">
+					<img class='grid' ng-src="{{poke.image}}"
+					>
 				</div>
 			</div>
 		</div>
