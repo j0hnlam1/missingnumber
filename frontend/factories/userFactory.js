@@ -3,24 +3,14 @@ myApp.factory('userFactory', function($http){
 	var userInfo = {};
 	var login = null;
 
-	// for chatroom
-	var currentusers = [];
-
 	factory.login = function(user, id, callback){
 		$http.post("/login", user).success(function(output) {
 			userInfo = output;
-			// console.log("logging user", userInfo);
-			currentusers.push(userInfo[0]);
-			console.log(currentusers, "user factrory");
 			login = id;
 			callback(output);
         })
 	}
 	factory.logout = function() {
-		//does this splice work?
-		console.log(currentusers);
-		console.log(userInfo);
-		currentusers.splice(userInfo, 1);
 		userInfo = {};
 		login = null;
 	}
@@ -33,9 +23,5 @@ myApp.factory('userFactory', function($http){
 		callback(userInfo);
 	}
 
-	//get all logged in users for chatroom
-	factory.getAllUsers = function(callback){
-		callback(currentusers);
-	}
 	return factory;
 })

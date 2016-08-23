@@ -38,12 +38,21 @@ var server = app.listen(8000, function(){
 	console.log('chat room');
 })
 var io = require('socket.io').listen(server);
-var users = {};
+
 var messages = [];
+var users = [];
 
 io.sockets.on('connection', function(socket){
 
 	socket.emit('messages', messages);
+	socket.emit('userlist', users);
+
+	socket.on("login", function(user){
+		users.push(user);
+		socket.emit("users", users);
+			socket.emit('messages', messages);
+			socket.emit('userlist', users);
+	})
 
 	socket.on('new_message', function(data){
 		console.log(data);

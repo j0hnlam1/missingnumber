@@ -1,10 +1,7 @@
 var myApp = angular.module('Myapp', ["ngRoute",
 									 "ngMap",
 									 "oc.lazyLoad", 
-									 "ngMapAutocomplete",
-									 "ngMaterial",
-									 "ngMessages",
-									 "material.svgAssetsCache"
+									 "ngMapAutocomplete"
 									]);
 
 (function(){

@@ -1,16 +1,25 @@
 <div class="container">
 	<div class="row" id="chatpage">
+
+		<!-- online users -->
 		<div class="col-xs-2" id="userslist">
-			<h4>Trainers</h4>
-			<h6 ng-repeat="u in allUsers">{{u.name}}</h6>
+			<h4 class="text-center">Trainers</h4>
+			<p ng-repeat="person in userlist">
+      			Hello {{person}}!
+    		</p>
 		</div>
+		
+		<!-- main chatbox -->
 		<div class="col-xs-10" id="chatroom" overflow="scroll">
-			<h2 ng-repeat="message in messages">{{message.name}} said: {{message.message}}</h2>
+			<div id="chatmessages">
+				<h2 ng-repeat="message in messages">{{message.name}} said: {{message.message}}</h2>
+			</div>
+
+			<div id="submitinput">
+				<input type="text" ng-model="newMessage.message" style="height:30px;width:90%;font-size:14pt;border-radius:5px;border:2px solid black;"/>
+				<button class="btn btn-primary" ng-click="sendMessage(newMessage)">Submit</button>
+			</div>
 
 		</div>
-	</div>
-	<div class="row text-center">
-		<input type="text" ng-model="newMessage.message"/>
-		<button class="btn btn-primary" ng-click="sendMessage(newMessage)">Submit</button>
 	</div>
 </div>

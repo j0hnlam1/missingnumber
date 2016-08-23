@@ -6,31 +6,37 @@
 
     function chatController($scope, $routeParams, userFactory, $location) {
 
-    	userFactory.getUser(function(data){
-    		console.log(data, "person");
-    		$scope.person = data;
-    	});
-
-    	userFactory.getAllUsers(function(data){
-    		console.log(data, "allusers");
-    		$scope.allUsers = data;
-    	});
-
-
     	var socket = io.connect();
-    	console.log(socket);
 
-    	$scope.sendMessage = function(message){
-    		console.log(message, "who sent the message");
-    		message.name = $scope.person[0].name;
-    		console.log(message);
-			socket.emit('new_message', message);
-    	}
+        userFactory.getUser(function(data){
+            if ( data == null ) {
+                console.log("no user logged in");
+            } else {
+                socket.emit("login", data[0].name);
+                $scope.person = data; 
+            }
+        });
 
-		socket.on('messages', function(data){
-			console.log(data, "socket on messages");
-			$scope.messages = data;
-		});		
+        socket.on('messages', function(messages){
+            $scope.messages = messages;
+        });
+
+        socket.on("userlist", function(userlist){
+            $scope.userlist = userlist;
+            console.log($scope.userlist);
+        }); 
+
+
+        // socket.on("users", function(data){
+        //     $scope.allUsers = data;
+        //     console.log($scope.allUsers);
+        // });
+
+        $scope.sendMessage = function(message){
+            message.name = $scope.person[0].name;
+            socket.emit('new_message', message);
+        }
+
 		
     } // ends chatController function
 })(); // ends everything
