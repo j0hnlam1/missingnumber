@@ -84,8 +84,8 @@
           					<div style="text-align: center">{{infoWindow.name}}</div>
           					<div style="text-align: center">Sited: {{infoWindow.createdAt}}</div>
           					<a href="#" class="arrow up" style="display: inline-block" ng-click="reportMarker(infoWindow.id, infoWindow.type, 0)"><img ng-if="infoWindow.voted != 1" src="./assets/images/up.png"><img ng-if="infoWindow.voted == 1" src="./assets/images/upHighlight.png"></a>
-          					<a href="#" class="arrow down" style="display: inline-block; float: right" ng-click="reportMarker(infoWindow.id, infoWindow.type, 1)"><img ng-if="infoWindow.voted != -1" src="./assets/images/down.png"><img ng-if="infoWindow.voted == -1" src="./assets/images/downHighlight.png"></a>
-          					<div style="margin-left: 35px; display: inline-block">{{infoWindow.count}}</div>
+          					<a href="#" class="arrow down" style="display: inline-block;" ng-click="reportMarker(infoWindow.id, infoWindow.type, 1)"><img ng-if="infoWindow.voted != -1" src="./assets/images/down.png"><img ng-if="infoWindow.voted == -1" src="./assets/images/downHighlight.png"></a>
+          					<div style="margin-left: 4px; display: inline-block">{{infoWindow.count}}</div>
           					
 
         				</div>

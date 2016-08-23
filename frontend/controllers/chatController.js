@@ -6,6 +6,10 @@
 
     function chatController($scope, $routeParams, userFactory, $location) {
     	var socket = io.connect('http://localhost:8000', {'sync disconnect on unload': true});
+        var userSocket;
+        userFactory.socketInfo(function(data) {
+            userSocket = data;
+        })
 
         if ($scope.person == undefined) {
             userFactory.getUser(function(data){
@@ -31,15 +35,17 @@
         });
         if ($scope.person == undefined) {
             socket.on("data", function(data) {
-                console.log(data);
-                var x = $.isEmptyObject(data);
-                if (x == true) {
-                    console.log("no user logged in");
-                } else {
-                    socket.emit("login", data[0].name);
-                    $scope.person = data;
+                var res = data.info.slice(2);
+                if (res == userSocket.id) {
+                    var x = $.isEmptyObject(data.data);
+                    if (x == true) {
+                        console.log("no user logged in");
+                    } else {
+                        socket.emit("login", data.data[0].name);
+                        $scope.person = data.data;
+                    }
+                    socket.removeListener('data');
                 }
-                socket.removeListener('data');
             })
         }
 
