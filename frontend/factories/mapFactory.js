@@ -13,13 +13,13 @@ myApp.factory('mapFactory', function($http) {
 
 	factory.newPokemon = function(marker, user){
 		var info = {pokeId: marker.pokeId, position: marker.position, user: user};
-		$http.post("/newPokemon", info).success(function(output) {
+		$http.post("/newPokemon", info).success(function() {
 			console.log('success');
         })
 	}
 
 	factory.removePokemon = function(lat, lng){
-		$http.get("/removePokemon/" + lat + "/"+ lng).success(function(output) {
+		$http.get("/removePokemon/" + lat + "/"+ lng).success(function() {
 			console.log('success');
         })
 	}
@@ -32,13 +32,13 @@ myApp.factory('mapFactory', function($http) {
 
 	factory.newGym = function(marker, user){
 		var info = {position: marker.position, user: user};
-		$http.post("/newGym", info).success(function(output) {
+		$http.post("/newGym", info).success(function() {
 			console.log('success');
         })
 	}
 
 	factory.removeGym = function(lat, lng){
-		$http.get("/removeGym/" + lat + "/"+ lng).success(function(output) {
+		$http.get("/removeGym/" + lat + "/"+ lng).success(function() {
 			console.log('success');
         })
 	}
@@ -49,15 +49,16 @@ myApp.factory('mapFactory', function($http) {
 		})
 	}
 
-	factory.newPokestop = function(marker) {
+	factory.newPokestop = function(marker, user) {
 		var info = {position: marker.position, user: user};
-		$http.post("/newPokestop", info).success(function(output) {
+		$http.post("/newPokestop", info).success(function() {
 			console.log('success');
         })
 	}
 
 	factory.removePokestop = function(lat, lng) {
-		$http.get("/removePokestop/" + lat + "/"+ lng).success(function(output) {
+		console.log(lat);
+		$http.get("/removePokestop/" + lat + "/"+ lng).success(function() {
 			console.log('success');
         })
 	}

@@ -31,7 +31,7 @@ module.exports = function(app){
     app.post('/newPokestop', function(req, res) {
       	pokestopController.create(req, res);
     })
-    app.get('/removePokemon/:lat/:lng', function(req, res) {
+    app.get('/removePokestop/:lat/:lng', function(req, res) {
         pokestopController.remove(req, res);
     })
     app.post('/login', function(req, res) {
