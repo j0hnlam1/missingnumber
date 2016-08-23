@@ -7,8 +7,7 @@ module.exports = (function() {
 			console.log(req);
 		},
 		create: function(req, res){
-			console.log(req.body);
-			Pokestop.create({position: req.body.position, votes: {count: 1, up: req.body.user}}, function(err, results) {
+			Pokestop.create({position: req.body.position, votes: {count: 1, up: req.body.user}}, function(err) {
 				if(err){
 					console.log(err);
 				}
@@ -27,11 +26,9 @@ module.exports = (function() {
 			var pos = [];
 			pos.push(parseFloat(req.params.lat));
 			pos.push(parseFloat(req.params.lng));
-			Pokestop.remove({position: pos}, function(err, results) {
+			Pokestop.remove({position: pos}, function(err) {
 				if (err) {
 					console.log(err);
-				} else {
-					res.json(results);
 				}
 			})
 		},
@@ -42,11 +39,11 @@ module.exports = (function() {
 			pos.push(parseFloat(req.body.lat));
 			pos.push(parseFloat(req.body.lng));
 			console.log(req.body.user);
-			Pokestop.find({position: pos}, function(err, results) {
+			Pokestop.findOne({position: pos}, function(err, results) {
 				if (err) {
 					console.log(err)
 				} else {
-					pokemon = results[0];
+					pokemon = results;
 					for (var i = 0; i < pokemon.votes.up.length; i++) {
 						if (pokemon.votes.up[i] == req.body.user) {
 							console.log('already voted');

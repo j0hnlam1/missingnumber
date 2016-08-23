@@ -28,6 +28,9 @@
   line-height: 100px;
   background-color: #b0e0e6;
   border: 1px solid lightgrey;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
 }
 #clickInstru {
   text-align: center;
@@ -55,11 +58,40 @@
 .grid {
   max-width: 70px;
   max-height: 70px;
+  border-radius: 10px;
+   /*Transition*/
+ -webkit-transition: all 0.5s ease;
+ -moz-transition: all 0.5s ease;
+ -o-transition: all 0.5s ease;
+
+}
+.marg {
+  margin-left: 9px;
+  margin-top: 9px;
+  
 }
 #topList {
   width: 50%;
   margin: 0 auto; 
 }
+.grid:focus {
+    outline: none;
+ }
 
+.grid:hover {  
+   opacity: 1;
+   
+ 
+   /*Glow*/
+  -webkit-box-shadow: 0px 0px 20px rgba(5,57,255,0.8);
+  -moz-box-shadow: 0px 0px 20px rgba(5,57,255,0.8);
+  box-shadow: 0px 0px 20px rgba(5,57,255,0.8);
+}
+.arrow {
+  /*Transition*/
+ -webkit-transition: all 0.5s ease;
+ -moz-transition: all 0.5s ease;
+ -o-transition: all 0.5s ease;
+}
 
 

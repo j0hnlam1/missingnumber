@@ -26,6 +26,7 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     $scope.gyms = [];
     $scope.pokestops = [];
     $scope.pokemons = [];
+    $scope.filteredType = [];
     $scope.pokeNames = ['Ash', 'Bulbasaur', 'Ivysaur', 'Venusaur', 'Charmander', 'Charmeleon', 'Charizard', 'Squirtle', 'Wartortle', 'Blastoise', 'Caterpie', 'Metapod', 'Butterfree', 'Weedle', 'Kakuna', 'Beedrill', 'Pidgey', 'Pidgeotto', 'Pidgeot', 'Rattata', 'Raticate', 'Spearow', 'Fearow', 'Ekans', 'Arbok', 'Pikachu', 'Raichu', 'Sandshrew', 'Sandslash', 'Nidoran-f', 'Nidorina', 'Nidoqueen', 'Nidoran-m', 'Nidorino', 'Nidoking', 'Clefairy', 'Clefable', 'Vulpix', 'Ninetales', 'Jigglypuff', 'Wigglytuff', 'Zubat', 'Golbat', 'Oddish', 'Gloom', 'Vileplume', 'Paras', 'Parasect', 'Venonat', 'Venomoth', 'Diglett', 'Dugtrio', 'Meowth', 'Persian', 'Psyduck', 'Golduck', 'Mankey', 'Primeape', 'Growlithe', 'Arcanine', 'Poliwag', 'Poliwhirl', 'Poliwrath', 'Abra', 'Kadabra', 'Alakazam', 'Machop', 'Machoke', 'Machamp', 'Bellsprout', 'Weepinbell', 'Victreebel', 'Tentacool', 'Tentacruel', 'Geodude', 'Graveler', 'Golem', 'Ponyta', 'Rapidash', 'Slowpoke', 'Slowbro', 'Magnemite', 'Magneton', 'Farfetchd', 'Doduo', 'Dodrio', 'Seel', 'Dewgong', 'Grimer', 'Muk', 'Shellder', 'Cloyster', 'Gastly', 'Haunter', 'Gengar', 'Onix', 'Drowzee', 'Hypno', 'Krabby', 'Kingler', 'Voltorb', 'Electrode', 'Exeggcute', 'Exeggutor', 'Cubone', 'Marowak', 'Hitmonlee', 'Hitmonchan', 'Lickitung', 'Koffing', 'Weezing', 'Rhyhorn', 'Rhydon', 'Chansey', 'Tangela', 'Kangaskhan', 'Horsea', 'Seadra', 'Goldeen', 'Seaking', 'Staryu', 'Starmie', 'Mr-Mime', 'Scyther', 'Jynx', 'Electabuzz', 'Magmar', 'Pinsir', 'Tauros', 'Magikarp', 'Gyarados', 'Lapras', 'Ditto', 'Eevee', 'Vaporeon', 'Jolteon', 'Flareon', 'Porygon', 'Omanyte', 'Omastar', 'Kabuto', 'Kabutops', 'Aerodactyl', 'Snorlax', 'Articuno', 'Zapdos', 'Moltres', 'Dratini', 'Dragonair', 'Dragonite', 'Mewtwo'];
     $scope.markerType = 4;
     $scope.pokeId = 153;
@@ -38,6 +39,7 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     $scope.pokeInstru = false;
     $scope.clickable = true;
     $scope.searchbar = false;
+    $scope.admin = false;
     $scope.highlighted = 0;
 
     var d = new Date();
@@ -106,6 +108,40 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
             }
             $scope.$apply();
         });
+    } else {
+        // turn searchbar to turn only on map load
+        $scope.searchbar = true;
+        var d = new Date();
+        var n = d.toISOString();
+        // current position coordinates
+        $scope.pos = {
+            lat: 0,
+            lng: 0
+        };
+        var icon = {
+            url: '../assets/images/ash.png',
+            size: [91,91],
+            origin: [0, 0],
+            anchor: [17, 34],
+            scaledSize: [50, 50]
+        };
+        $scope.pokemon.unshift({
+            pokeId: 0,
+            icon: icon,
+            title: "You're location",
+            position: [0, 0],
+            confirmed: true,
+            createdAt: n
+        });
+        $scope.ash = {
+            pokeId: 0,
+            icon: icon,
+            title: "You're location",
+            position: [0, 0],
+            confirmed: true,
+            createdAt: n
+        }
+        $scope.$apply();
     }
     // db call for all pokemon
     mapFactory.findPokemon(function(pokemons) {
@@ -125,7 +161,8 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                 position: pokemons[i].position,
                 confirmed: true,
                 createdAt: pokemons[i].createdAt,
-                count: pokemons[i].votes.count
+                count: pokemons[i].votes.count,
+                votes: pokemons[i].votes
             });             
         }
     });
@@ -139,7 +176,8 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                 position: gyms[i].position,
                 confirmed: true,
                 createdAt: gyms[i].createdAt,
-                count: gyms[i].votes.count
+                count: gyms[i].votes.count,
+                votes: gyms[i].votes
             });
         }
     });
@@ -153,12 +191,15 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                 position: pokestops[i].position,
                 confirmed: true,
                 createdAt: pokestops[i].createdAt,
-                count: pokestops[i].votes.count
+                count: pokestops[i].votes.count,
+                votes: pokestops[i].votes
             });
         }
     });
     // function to let you add temporary markers to map
     $scope.allowMarker = function() {
+        document.getElementsByClassName("add")[$scope.highlighted].style.boxShadow = "none";
+        document.getElementsByClassName("add")[$scope.highlighted].style.borderColor = "black";
         fuckyoukenny();
         if ($scope.login != null) {
             var allowTemp = $scope.allow;
@@ -184,24 +225,28 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     }
     // called when user picks the marker they want to place on the map
     $scope.selectPokemon = function(type, poke) {
-        document.getElementsByClassName("add")[$scope.highlighted].style.background = "white";
+        document.getElementsByClassName("add")[$scope.highlighted].style.boxShadow= "none";
+        document.getElementsByClassName("add")[$scope.highlighted].style.borderColor = "black";
         fuckyoukenny();
         $scope.clickable = false;
         $scope.markerType = type;
         if (type == 0) {
             $scope.pokeId = poke;
             $scope.map.setOptions({draggableCursor: 'url(../assets/images/pokemons/'+ poke +'.png) 36 34, auto'});
-            document.getElementsByClassName("add")[this.$index + 2].style.background = "blue";
+            document.getElementsByClassName("add")[this.$index + 2].style.boxShadow = "10px 10px 5px #888888";
+            document.getElementsByClassName("add")[this.$index + 2].style.borderColor = "red";
             $scope.highlighted = this.$index + 2;
         }
         if (type == 1) {
             $scope.map.setOptions({draggableCursor: 'url(../assets/images/gym.png) 36 34, auto'});
-            var x = document.getElementsByClassName("add")[0].style.background = "blue";
+            document.getElementsByClassName("add")[0].style.boxShadow = "10px 10px 5px #888888";
+            document.getElementsByClassName("add")[0].style.borderColor = "red";
             $scope.highlighted = 0;
         }
         if (type == 2) {
             $scope.map.setOptions({draggableCursor: 'url(../assets/images/pokestop.png) 36 34, auto'});
-            var x = document.getElementsByClassName("add")[1].style.background = "blue";
+            document.getElementsByClassName("add")[1].style.boxShadow = "10px 10px 5px #888888";
+            document.getElementsByClassName("add")[1].style.borderColor = "red";
             $scope.highlighted = 1;
         }
     }
@@ -269,7 +314,8 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     }
     // adds temporary markers to db making them permanent markers
     $scope.confirmMarker = function() {
-        document.getElementsByClassName("add")[$scope.highlighted].style.background = "white";
+        document.getElementsByClassName("add")[$scope.highlighted].style.boxShadow = "none";
+        document.getElementsByClassName("add")[$scope.highlighted].style.borderColor = "black";
         fuckyoukenny();
         if ($scope.markerType == 0) {
             var last = $scope.pokemon[$scope.pokemon.length - 1];
@@ -306,7 +352,8 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     }
     // disallows adding temporary markers to map and removes temporary markers
     $scope.cancelMarker = function() {
-        document.getElementsByClassName("add")[$scope.highlighted].style.background = "white";
+        document.getElementsByClassName("add")[$scope.highlighted].style.boxShadow = "none";
+        document.getElementsByClassName("add")[$scope.highlighted].style.borderColor = "black";
         fuckyoukenny();
         switchCancel();
         $scope.showList = true;
@@ -318,13 +365,22 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     // when you click on a marker, we get data for infowindow and then display infowindow at marker location
     $scope.markerInfo = function(e, marker) {
         fuckyoukenny();
+        var wind = this;
+        if (this.type == "pokemon") {
+            wind.anchorPoint.x = 17.5;
+            wind.anchorPoint.y = -19;
+        } else {
+            wind.anchorPoint.x = 3.5;
+        }
         var date = cleanDate(marker.createdAt);
         if (marker.pokeId != 0){
             $scope.infoWindow = {createdAt: date, name: $scope.pokeNames[marker.pokeId], id: this.id, type: this.type, count: marker.count};
-            $scope.map.showInfoWindow('foo-iw', this);
+            $scope.map.showInfoWindow('foo-iw', wind);
+            updateVote(marker);
         }
     }
-    // button in infowindow, deletes marker.. logic needs overhaul
+    // upvote downvote buttons. id param comes from $scope.infoWindow.id, type also comes from $scope.infoWindow.type
+    // voteType: 0 = is up, 1 is down
     $scope.reportMarker = function(id, type, voteType) {
         fuckyoukenny();
         if ($scope.login != null) {
@@ -334,8 +390,10 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                     mapFactory.addPokeVote(marker.position, $scope.user.email, voteType, function(newCount) {
                         var output = $scope.pokemon[id];
                         output.count = newCount.votes.count;
+                        output.votes = newCount.votes;
                         $scope.pokemon[id] = output;
                         $scope.infoWindow.count = newCount.votes.count;
+                        updateVote(marker);
                     });
                 }
             }
@@ -345,8 +403,10 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                     mapFactory.addGymVote(marker.position, $scope.user.email, voteType, function(newCount) {
                         var output = $scope.gyms[id];
                         output.count = newCount.votes.count;
+                        output.votes = newCount.votes;
                         $scope.gyms[id] = output;
                         $scope.infoWindow.count = newCount.votes.count;
+                        updateVote(marker);
                     });
                 }
             }
@@ -356,40 +416,32 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                     mapFactory.addPokestopVote(marker.position, $scope.user.email, voteType, function(newCount) {
                         var output = $scope.pokestops[id];
                         output.count = newCount.votes.count;
+                        output.votes = newCount.votes;
                         $scope.pokestops[id] = output;
                         $scope.infoWindow.count = newCount.votes.count;
+                        updateVote(marker);
                     });
                 }
             }
         }
     }
-    // filter logic.. need kenny to explain
+    // toggles the show for the grid. showfilter shows the grid and filter bool does the ngif
     $scope.toggleFilter = function() {
         var sfilter = $scope.showFilter;
-        //$scope.showFilter = true
         var bfilter = $scope.filterBool;
-        //$scope.filterBool = false
         switchCancel();
         if (sfilter == false) {
             $scope.showFilter = true;
         }
         if (bfilter == true) {
             $scope.filterBool = false;
-            $scope.pokeFilter = 0;
         } else {
             $scope.filterBool = true;
             $scope.filteredpokemon.push($scope.ash);
         }
     }
-
-
-
-
-    // same as above
-    $scope.filteredType = [];
+    // idk
     $scope.filterPoke = function(poke) {
-        // console.log(this);
-        // console.log($scope.filteredpokemon);
         // check if poke is in $scope.filteredpokemon array;
         if (containsPoke(poke, $scope.filteredpokemon)) {
             for (var i = 0; i < $scope.filteredpokemon.length; i++) {
@@ -420,22 +472,29 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
         }
         checkFilterHighlight();
     }
-
-    function checkFilterHighlight() {
-        for (var k = 0; k < 150; k++) {
-            document.getElementsByClassName("color")[k].style.background = "white";
+    $scope.adminRemove = function() {
+        var id = $scope.infoWindow.id;
+        if ($scope.infoWindow.type == "pokemon") {
+            mapFactory.removePokemon($scope.pokemon[id].position[0], $scope.pokemon[id].position[1]);
+            $scope.pokemon.splice(id, 1);
         }
-        for (var j = 0; j < $scope.filteredType.length; j++) {
-            document.getElementsByClassName("color")[$scope.filteredType[j] - 1].style.background = "blue";
+        if ($scope.infoWindow.type == "gym") {
+            mapFactory.removeGym($scope.gyms[id].position[0], $scope.gyms[id].position[1]);
+            $scope.gyms.splice(id, 1);
+        }
+        if ($scope.infoWindow.type == "pokestop") {
+            mapFactory.removePokestop($scope.pokestops[id].position[0], $scope.pokestops[id].position[1]);
+            $scope.pokestops.splice(id, 1);
         }
     }
-
-
-
-
-    
-    // ditto
+    // checks to see if item is in array. array param is $scope.filteredpokemon and x is id were checking
+    // Bug! If you call this before $scope.ash has a chance to be pushed correctly into $scope.filteredpokemon
+    // you get an error. not sure how to fix or if we need to
+    // kinda fixed it. still get the error but the user experience is better
     function containsPoke(x, array) {
+        if (array[0] == undefined) {
+            array[0] = $scope.ash;
+        }
         for(var i = 0 ; i < array.length; i++) {
             if(array[i].pokeId == x) {
                 return true;
@@ -443,12 +502,43 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
         }
         return false;
     }
-    // test functions for development purposes only
-    $scope.test = function() {
-        console.log($scope.infoWindow);
+    // loops through and sets all filter icons white. then reblues the ones that need to be
+    function checkFilterHighlight() {
+        for (var k = 0; k < 150; k++) {
+            document.getElementsByClassName("color")[k].style.boxShadow = "none";
+            document.getElementsByClassName("color")[k].style.borderColor = "black";
+        }
+        for (var j = 0; j < $scope.filteredType.length; j++) {
+            document.getElementsByClassName("color")[$scope.filteredType[j] - 1].style.boxShadow = "10px 10px 5px #888888";
+            document.getElementsByClassName("color")[$scope.filteredType[j] - 1].style.borderColor = "red";
+        }
     }
-    function test() {
-        console.log('yo');
+    // updates infowindow to tell the user if they have up or downwoted the marker. the marker is the param. duh
+    function updateVote(marker) {
+        var bool = false;
+        if (marker.votes != undefined) {
+            for (var i = 0; i < marker.votes.up.length; i++) {
+                if (marker.votes.up[i] == $scope.user.email) {
+                    bool = true;
+                    $scope.infoWindow.voted = 1;
+                    break;
+                }
+            }
+            if (bool == false) {
+                for (var i = 0; i < marker.votes.down.length; i++) {
+                    if (marker.votes.down[i] == $scope.user.email) {
+                        bool = true;
+                        $scope.infoWindow.voted = -1;
+                        break;
+                    }
+                }
+            }
+            if (bool == false) {
+                $scope.infoWindow.voted = 0;
+            }
+        } else {
+            $scope.infoWindow.voted = 1;
+        }
     }
     // grabs login info from factory
     function fuckyoukenny() {
@@ -458,6 +548,9 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
             if (id == null) {
                 switchCancel();
                 $scope.allow = false;
+            }
+            if ($scope.user.email == "billyboynevin@gmail.com") {
+                $scope.admin = true;
             }
         })
     }
@@ -469,7 +562,9 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     function switchCancel() {
         checkFilterHighlight();
         $scope.filteredType = [];
-        $scope.map.setOptions({draggableCursor: 'default'});
+        if ($scope.map != undefined) {
+            $scope.map.setOptions({draggableCursor: 'default'});
+        }
         $scope.filteredpokemon = [];
         $scope.clickable = true;
         $scope.cancfirm = false;
@@ -531,137 +626,18 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
             'Error: Your browser doesn\'t support geolocation.');
     }
     $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&library=places,visualization";
+
+    //
+    // test functions for development purposes only
+    $scope.test = function() {
+        console.log($scope.infoWindow);
+    }
+    function test() {
+        console.log('yo');
+    }
+    //
+
 }
-
-
-
-
-
-
-    // deprecated code. should be saved somewhere else and removed from this page
-
-    // $scope.heatShow = false;
-    // $scope.heatType = 0;
-// $scope.toggleHeatMap = function(poke) {
-    //     if ($scope.heatData.length < 1) {
-    //         $scope.heatType = poke;
-    //         for (var i = 0; i < $scope.pokemon.length; i++) {
-    //             if ($scope.pokemon[i].pokeId == poke) {
-    //                 var data = new google.maps.LatLng($scope.pokemon[i].position[0], $scope.pokemon[i].position[1]);
-    //                 $scope.heatData.push(data);
-    //             }
-    //         }
-    //     } else {
-    //         if (poke != $scope.heatType) {
-    //             $scope.heatData.length = 0;
-    //             $scope.heatType = poke;
-    //             for (var i = 0; i < $scope.pokemon.length; i++) {
-    //                 if ($scope.pokemon[i].pokeId == poke) {
-    //                     var data = new google.maps.LatLng($scope.pokemon[i].position[0], $scope.pokemon[i].position[1]);
-    //                     $scope.heatData.push(data);
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     heatmap.setMap(heatmap.getMap());
-    // }
-    // $scope.toggleHeatPoke = function() {
-    //     switchCancel();
-    //     $scope.allow = false;
-    //     if ($scope.heatShow == true){
-    //         $scope.heatShow = false;
-    //     } else {
-    //         $scope.heatShow = true;
-    //     }
-    // }
-    // $scope.heatOff = function() {
-    //     switchCancel();
-    //     $scope.allow = false;
-    //     $scope.heatData.length = 0;
-    //     heatmap.setMap(heatmap.getMap());
-    // }
-
-/************SEARCH BAR FOR POKEMON**********/
-// function DemoCtrl ($timeout, $q, $log) {
-//     var self = this;
-
-    // $scope.simulateQuery = false;
-    // $scope.isDisabled    = false;
-
-//     // list of `state` value/display objects
-    // $scope.states        = loadAll();
-    // console.log($scope.states);
-    // $scope.querySearch   = querySearch;
-    // $scope.selectedItemChange = selectedItemChange;
-    // $scope.searchTextChange   = searchTextChange;
-
-//     self.newState = newState;
-
-    // ******************************
-    // Internal methods
-    // ******************************
-
-    /**
-     * Search for states... use $timeout to simulate
-     * remote dataservice call.
-     */
-    // function querySearch (query) {
-    //   var results = query ? $scope.states.filter( createFilterFor(query) ) : $scope.states,
-    //       deferred;
-    //   if ($scope.simulateQuery) {
-    //     deferred = $q.defer();
-    //     $timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
-    //     return deferred.promise;
-    //   } else {
-    //     return results;
-    //   }
-    // }
-
-    // function searchTextChange(text) {
-    //   $log.info('Text changed to ' + text);
-    // }
-
-    // function selectedItemChange(item) {
-    //   $log.info('Item changed to ' + JSON.stringify(item));
-    // }
-
-    /**
-     * Build `states` list of key/value pairs
-     */
-    // function loadAll() {
-    //   var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
-    //           Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
-    //           Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
-    //           Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
-    //           North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
-    //           South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
-    //           Wisconsin, Wyoming';
-
-    //   return allStates.split(/, +/g).map( function (state) {
-    //     return {
-    //       value: state.toLowerCase(),
-    //       display: state
-    //     };
-    //   });
-    // }
-
-    /**
-     * Create filter function for a query string
-     */
-    // function createFilterFor(query) {
-    //   var lowercaseQuery = angular.lowercase(query);
-
-    //   return function filterFn(state) {
-    //     return (state.value.indexOf(lowercaseQuery) === 0);
-    //   };
-
-    // }
-  // }
-
-/***************** END OF SERACH BAR *******************/
-
-
-
 
 })();
 

@@ -80,12 +80,13 @@
 			  		</marker>
 			  		<info-window id="foo-iw">
         				<div ng-non-bindable="">
-          					Name: {{infoWindow.name}}<br/>
-
-          					Date Created: {{infoWindow.createdAt}}<br/>
-          					Count: {{infoWindow.count}}<br/>
-          					<a href="#" ng-click="reportMarker(infoWindow.id, infoWindow.type, 0)">Up</a>
-          					<a href="#" ng-click="reportMarker(infoWindow.id, infoWindow.type, 1)">Down</a>
+        					<a href="#" ng-show="admin" ng-click="adminRemove()">Remove</a>
+          					<div style="text-align: center">{{infoWindow.name}}</div>
+          					<div style="text-align: center">Sited: {{infoWindow.createdAt}}</div>
+          					<a href="#" class="arrow up" style="display: inline-block" ng-click="reportMarker(infoWindow.id, infoWindow.type, 0)"><img ng-if="infoWindow.voted != 1" src="./assets/images/up.png"><img ng-if="infoWindow.voted == 1" src="./assets/images/upHighlight.png"></a>
+          					<a href="#" class="arrow down" style="display: inline-block; float: right" ng-click="reportMarker(infoWindow.id, infoWindow.type, 1)"><img ng-if="infoWindow.voted != -1" src="./assets/images/down.png"><img ng-if="infoWindow.voted == -1" src="./assets/images/downHighlight.png"></a>
+          					<div style="margin-left: 35px; display: inline-block">{{infoWindow.count}}</div>
+          					
 
         				</div>
      			 	</info-window>
@@ -108,12 +109,12 @@
 			<div id='clickInstru' ng-show='clickInstru'>Click on map to place object</div>
 			<div id='pokeList' ng-show='showList'>
 				<div id='topList'>
-					<div class='grid add' style="display: inline-block; border: 1px solid black;" ng-click='selectPokemon(1, 0)'>
+					<div class='grid add marg' style="display: inline-block; border: 1px solid black;" ng-click='selectPokemon(1, 0)'>
 						<!-- clicking switchMarker(1) turns clickInstru true -->
 						<!-- changes markerType to gym -->
 						<img class='grid' src='./assets/images/gym.png'>
 					</div>
-					<div class='grid add' style="display: inline-block; border: 1px solid black;"  ng-click='selectPokemon(2, 0)'>
+					<div class='grid add marg' style="display: inline-block; border: 1px solid black;"  ng-click='selectPokemon(2, 0)'>
 						<!-- clicking switchMarker(1) turns clickInstru true -->
 						<!-- changes markerType to pokestop -->
 						<img class='grid' src='./assets/images/pokestop.png'>
@@ -125,7 +126,7 @@
 
 
 				</div>
-				<div class='grid add' 
+				<div class='grid add marg' 
 					ng-repeat='poke in pokemons'
 					style="display: inline-block; border: 1px solid black;"
 					ng-click="selectPokemon(0, poke.id)">
@@ -133,7 +134,7 @@
 				</div>
 			</div>
 			<div id='pokeFilter' ng-show='showFilter'>
-				<div class='grid color'
+				<div class='grid color marg'
 					ng-repeat='poke in pokemons'
 					style="display: inline-block; border: 1px solid black;"
 					ng-click="filterPoke(poke.id)">
