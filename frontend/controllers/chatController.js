@@ -11,7 +11,9 @@
         userFactory.getUser(function(data){
             if ( data == null ) {
                 console.log("no user logged in");
+                $route.reload();
             } else {
+                console.log(data);
                 socket.emit("login", data[0].name);
                 $scope.person = data; 
             }

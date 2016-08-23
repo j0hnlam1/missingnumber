@@ -59,6 +59,14 @@ io.sockets.on('connection', function(socket){
 		messages.push(data);
 		io.sockets.emit('messages', messages);
 	})
+
+	socket.on('logout', function(user){
+		for ( var i = 0; i< users.length; i++) {
+			if ( users[i] == user ) {
+				users.splice(i, 1)
+			}
+		}
+	})
 	socket.on('disconnect', function(){
 	
 	})
