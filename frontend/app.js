@@ -20,6 +20,7 @@ var myApp = angular.module('Myapp', ["ngRoute",
 			})
 			.when('/chat', 
 			{
+				controller: 'chatController',
 				templateUrl: "partials/chat.html"
 			})
 			.when('/trade', 
