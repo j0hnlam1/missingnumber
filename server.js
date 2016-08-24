@@ -65,8 +65,9 @@ io.sockets.on('connection', function(socket){
 	})
 
 	socket.on('info', function(data) {
-		console.log(data, "in the socket.info");
-		socket.broadcast.emit('data', data);
+		console.log(socket.id);
+		console.log(data);
+		socket.broadcast.emit('data', {data: data, info: socket.id});
 	})
 	socket.on('disconnect', function(){
 		console.log('disconnect');

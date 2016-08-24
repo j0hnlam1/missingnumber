@@ -3,6 +3,9 @@ myApp.factory('userFactory', function($http){
 	var userInfo = {};
 	var login = null;
 	var socket = io.connect();
+	factory.socketInfo = function(callback) {
+		callback(socket);
+	}  
 
 	factory.login = function(user, id, callback){
 		$http.post("/login", user).success(function(output) {
