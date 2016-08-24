@@ -1,0 +1,29 @@
+{
+  "name": "missingnumber",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.8",
+    "socket.io": "^1.4.8",
+    "underscore-contrib": "^0.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/j0hnlam1/missingnumber.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/j0hnlam1/missingnumber/issues"
+  },
+  "homepage": "https://github.com/j0hnlam1/missingnumber#readme"
+}

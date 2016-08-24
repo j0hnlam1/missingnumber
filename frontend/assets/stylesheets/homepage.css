@@ -1,0 +1,97 @@
+/*.autocompletedemoCustomTemplate .autocomplete-custom-template li {
+  border-bottom: 1px solid #ccc;
+  height: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  white-space: normal; }
+.autocompletedemoCustomTemplate .autocomplete-custom-template li:last-child {
+  border-bottom-width: 0; }
+.autocompletedemoCustomTemplate .autocomplete-custom-template .item-title,
+.autocompletedemoCustomTemplate .autocomplete-custom-template .item-metadata {
+  display: block;
+  line-height: 2; }
+.autocompletedemoCustomTemplate .autocomplete-custom-template .item-title md-icon {
+  height: 18px;
+  width: 18px; }*/
+
+
+
+.top {
+  margin-top: 50px;
+}
+.topBut {
+  display: inline-block;
+  width: 45%;
+  height: 100px;
+  margin-right: 10px;
+  text-align: center;
+  line-height: 100px;
+  background-color: #b0e0e6;
+  border: 1px solid lightgrey;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+}
+#clickInstru {
+  text-align: center;
+}
+#pokeInstru {
+  text-align: center;
+}
+.cancfirm {
+  display: inline-block;
+  width: 45%;
+  margin-top: 10px;
+  text-align: center;
+  border: 1px solid lightgrey;
+  background-color: #b43864;
+  color: white;
+}
+#pokeList {
+  overflow: scroll;
+  height: 500px;
+}
+#pokeFilter {
+  overflow: scroll;
+  height: 500px;
+}
+.grid {
+  max-width: 70px;
+  max-height: 70px;
+  border-radius: 10px;
+   /*Transition*/
+ -webkit-transition: all 0.5s ease;
+ -moz-transition: all 0.5s ease;
+ -o-transition: all 0.5s ease;
+
+}
+.marg {
+  margin-left: 9px;
+  margin-top: 9px;
+  
+}
+#topList {
+  width: 50%;
+  margin: 0 auto; 
+}
+.grid:focus {
+    outline: none;
+ }
+
+.grid:hover {  
+   opacity: 1;
+   
+ 
+   /*Glow*/
+  -webkit-box-shadow: 0px 0px 20px rgba(5,57,255,0.8);
+  -moz-box-shadow: 0px 0px 20px rgba(5,57,255,0.8);
+  box-shadow: 0px 0px 20px rgba(5,57,255,0.8);
+}
+.arrow {
+  /*Transition*/
+ -webkit-transition: all 0.5s ease;
+ -moz-transition: all 0.5s ease;
+ -o-transition: all 0.5s ease;
+}
+
+

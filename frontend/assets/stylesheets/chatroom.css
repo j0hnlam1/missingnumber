@@ -1,0 +1,21 @@
+#chatpage{
+	margin: 40px 0px 20px 0px;
+}
+#userslist{
+	border: 1px solid black;
+	height: 600px;
+	background-color: #83D2E1;
+	border-radius: 5px;
+}
+#chatroom{
+	border: 1px solid black;
+	height: 600px;
+	overflow-y: scroll;
+	border-radius: 5px;	
+}
+#chatmessages{
+	height: 550px;
+}
+#submitinput{
+	height: 50px;
+}

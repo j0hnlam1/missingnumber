@@ -1,0 +1,15 @@
+<div class="collapse navbar-collapse">
+    <ul class="nav navbar-nav">
+        <li ng-class="{ active: isActive('/')}"><a href="/">Map</a></li>
+        <li ng-class="{ active: isActive('/chat')}"><a href="/chat">Chat</a></li>
+        <li ng-class="{ active: isActive('/trade')}"><a href="/trade">Trade</a></li>
+        <li ng-class="{ active: isActive('/aboutus')}"><a href="/aboutus">About</a></li>
+    </ul>
+   
+<div ng-controller="userController" class="pull-right">
+        <div ng-show="loginbutton" class="g-signin2" data-onsuccess="onSignIn" id="login"></div>
+        <h4 ng-show="logoutbutton" id="greetings">Hello, {{user.name}} &nbsp&nbsp&nbsp</h4>
+        <div ng-show="logoutbutton" onclick="signOut();" id="logout" ><button class="btn btn-danger">Sign out</button></div>
+</div>
+</div>
+   
