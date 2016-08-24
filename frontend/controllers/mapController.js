@@ -364,7 +364,6 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
 
     // when you click on a marker, we get data for infowindow and then display infowindow at marker location
     $scope.markerInfo = function(e, marker) {
-        fuckyoukenny();
         var wind = this;
         if (this.type == "pokemon") {
             wind.anchorPoint.x = 17.5;
