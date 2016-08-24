@@ -41,6 +41,7 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     $scope.searchbar = false;
     $scope.admin = false;
     $scope.highlighted = 0;
+    $scope.loggedin = false;
 
     var d = new Date();
     d.setDate(d.getDate() - 1);
@@ -220,6 +221,7 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                 $scope.showList = true;
             }
         } else {
+            $scope.loggedin = true;
             console.log("notloggedin");
         }
     }
@@ -548,8 +550,10 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
                 switchCancel();
                 $scope.allow = false;
             }
-            if ($scope.user.email == "billyboynevin@gmail.com" || $scope.user.email == "kennyllau9@gmail.com") {
-                $scope.admin = true;
+            if ($scope.user != undefined) {
+                if ($scope.user.email == "billyboynevin@gmail.com" || $scope.user.email == "kennyllau9@gmail.com") {
+                    $scope.admin = true;
+                }
             }
         })
     }
@@ -560,6 +564,7 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     // in summary, resets every value back to default (same as how it was on page load) except $scope.allow. also removes unconfirmed markers
     function switchCancel() {
         checkFilterHighlight();
+        $scope.loggedin = false;
         $scope.filteredType = [];
         if ($scope.map != undefined) {
             $scope.map.setOptions({draggableCursor: 'default'});
