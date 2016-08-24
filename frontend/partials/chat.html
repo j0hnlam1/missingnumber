@@ -12,14 +12,12 @@
 		<!-- main chatbox -->
 		<div class="col-xs-10" id="chatroom" overflow="scroll">
 			<div id="chatmessages">
-				<h2 ng-repeat="message in messages">{{message.name}} said: {{message.message}}</h2>
+				<h2 ng-repeat="message in messages | orderBy:'-'">{{message.name}} said: {{message.message}}</h2>
 			</div>
-
-			<div id="submitinput">
-				<input type="text" ng-model="newMessage.message" style="height:30px;width:90%;font-size:14pt;border-radius:5px;border:2px solid black;"/>
-				<button class="btn btn-primary" ng-click="sendMessage(newMessage)">Submit</button>
-			</div>
-
+		</div>
+		<div id="submitinput">
+			<input id="message" type="text" ng-model="newMessage.message" style="height:30px;width:90%;font-size:14pt;border-radius:5px;border:2px solid black;"/>
+			<button class="btn btn-primary" ng-click="sendMessage(newMessage)">Submit</button>
 		</div>
 	</div>
 </div>

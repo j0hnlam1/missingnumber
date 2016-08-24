@@ -629,58 +629,6 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
 
 
 
-
-
-
-
-
-    // deprecated code. should be saved somewhere else and removed from this page
-
-    // $scope.heatShow = false;
-    // $scope.heatType = 0;
-// $scope.toggleHeatMap = function(poke) {
-    //     if ($scope.heatData.length < 1) {
-    //         $scope.heatType = poke;
-    //         for (var i = 0; i < $scope.pokemon.length; i++) {
-    //             if ($scope.pokemon[i].pokeId == poke) {
-    //                 var data = new google.maps.LatLng($scope.pokemon[i].position[0], $scope.pokemon[i].position[1]);
-    //                 $scope.heatData.push(data);
-    //             }
-    //         }
-    //     } else {
-    //         if (poke != $scope.heatType) {
-    //             $scope.heatData.length = 0;
-    //             $scope.heatType = poke;
-    //             for (var i = 0; i < $scope.pokemon.length; i++) {
-    //                 if ($scope.pokemon[i].pokeId == poke) {
-    //                     var data = new google.maps.LatLng($scope.pokemon[i].position[0], $scope.pokemon[i].position[1]);
-    //                     $scope.heatData.push(data);
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     heatmap.setMap(heatmap.getMap());
-    // }
-    // $scope.toggleHeatPoke = function() {
-    //     switchCancel();
-    //     $scope.allow = false;
-    //     if ($scope.heatShow == true){
-    //         $scope.heatShow = false;
-    //     } else {
-    //         $scope.heatShow = true;
-    //     }
-    // }
-    // $scope.heatOff = function() {
-    //     switchCancel();
-    //     $scope.allow = false;
-    //     $scope.heatData.length = 0;
-    //     heatmap.setMap(heatmap.getMap());
-    // }
-
-
-
-
-    //
     // test functions for development purposes only
     $scope.test = function() {
         console.log($scope.infoWindow);

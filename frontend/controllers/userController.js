@@ -31,7 +31,7 @@ function userController($scope, $routeParams, $route, $location, $ocLazyLoad, us
   		{cache: false}
 		);
 
-	var socket = io.connect();
+	// var socket = io.connect();
     function onSignIn(googleUser) {
         var profile = googleUser.getBasicProfile();
         var name = profile.getName();

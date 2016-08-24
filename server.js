@@ -43,15 +43,19 @@ var messages = [];
 var users = [];
 
 io.sockets.on('connection', function(socket){
-
-	socket.emit('messages', messages);
-	socket.emit('userlist', users);
-
+	console.log('connection');
+	// socket.emit('messages', messages);
+	// socket.emit('userlist', users);
+	var me = "";
 	socket.on("login", function(user){
+		console.log(me);
+		var index = users.indexOf(user);
+		users.splice(index, 1);
 		users.push(user);
-		socket.emit("users", users);
-			socket.emit('messages', messages);
-			socket.emit('userlist', users);
+		me = user;
+		// socket.emit("users", users);
+		socket.emit('messages', messages);
+		socket.emit('userlist', users);
 	})
 
 	socket.on('new_message', function(data){
@@ -60,14 +64,13 @@ io.sockets.on('connection', function(socket){
 		io.sockets.emit('messages', messages);
 	})
 
-	socket.on('logout', function(user){
-		for ( var i = 0; i< users.length; i++) {
-			if ( users[i] == user ) {
-				users.splice(i, 1)
-			}
-		}
+	socket.on('info', function(data) {
+		console.log(data, "in the socket.info");
+		socket.broadcast.emit('data', data);
 	})
 	socket.on('disconnect', function(){
-	
+		console.log('disconnect');
+		var index = users.indexOf(me);
+		users.splice(index, 1);
 	})
 })
