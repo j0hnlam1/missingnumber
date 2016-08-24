@@ -22,7 +22,7 @@
                 }
             });
         }
-
+    
         socket.on('messages', function(messages){
             $scope.messages = messages;
             $scope.$digest();
@@ -45,6 +45,7 @@
                         $scope.person = data.data;
                     }
                     socket.removeListener('data');
+
                 }
             })
         }

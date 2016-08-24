@@ -624,7 +624,9 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
             'Error: The Geolocation service failed.' :
             'Error: Your browser doesn\'t support geolocation.');
     }
+
     $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBh-PQkf7RLcF93okx8yhp59dhDe-vxwys&library=places,visualization";  
+
 }
 
 })();

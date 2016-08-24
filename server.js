@@ -63,6 +63,7 @@ io.sockets.on('connection', function(socket){
 		messages.push(data);
 		io.sockets.emit('messages', messages);
 	})
+
 	socket.on('info', function(data) {
 		console.log(socket.id);
 		console.log(data);
