@@ -53,8 +53,6 @@ function userController($scope, $routeParams, $route, $location, $ocLazyLoad, us
         userFactory.logout();
         $scope.loginbutton = true;
         $scope.logoutbutton = false;
-    
-        socket.emit('logout', userInfo.name);
 
         $route.reload();
     }
