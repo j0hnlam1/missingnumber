@@ -5,7 +5,7 @@
     .controller('chatController', chatController);
 
     function chatController($scope, $routeParams, userFactory, $location) {
-    	var socket = io.connect('http://localhost:8000', {'sync disconnect on unload': true});
+    	var socket = io.connect({'sync disconnect on unload': true});
         var userSocket;
         userFactory.socketInfo(function(data) {
             userSocket = data;

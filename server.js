@@ -2,15 +2,22 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 
-// var bcrypt = require('bcrypt');
+//
+console.log("on");
+const https = require('https');
+const fs = require('fs');
+
+var options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('key-cert.pem')
+};
+//
 
 var app = express();
 
 app.use(express.static(path.join(__dirname, './frontend')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-
 
 app.all('/aboutus', function(req, res, next) {
   // Just send the index.html for other files to support HTML5Mode
@@ -26,6 +33,9 @@ app.all('/trade', function(req, res, next) {
 });
 
 
+
+
+
 require('./backend/config/db.js');
 require('./backend/config/routes.js')(app);
 
@@ -37,6 +47,13 @@ var server = app.listen(8000, function(){
 	console.log('now listening to port 8000');
 	console.log('chat room');
 })
+
+// var server = https.createServer(options, app).listen(3000, function(){
+//     console.log("server started at port 3000");
+// });
+
+
+
 var io = require('socket.io').listen(server);
 
 var messages = [];
