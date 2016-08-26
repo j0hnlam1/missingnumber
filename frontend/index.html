@@ -31,6 +31,9 @@
 
     <!-- socket for chatroom -->
     <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect({'sync disconnect on unload': true});
+    </script>
 
 </head> 
 <body>

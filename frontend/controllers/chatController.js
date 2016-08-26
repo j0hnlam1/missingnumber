@@ -7,6 +7,10 @@
     function chatController($scope, $routeParams, userFactory, $location) {
     	var socket = io.connect({'sync disconnect on unload': true});
         var userSocket;
+        
+        socket.emit("getonlineusers");
+        socket.emit("getmessages");
+
         userFactory.socketInfo(function(data) {
             userSocket = data;
         })
@@ -50,10 +54,10 @@
             })
         }
 
-        // socket.on("users", function(data){
-        //     $scope.allUsers = data;
-        //     console.log($scope.allUsers);
-        // });
+            // socket.on("users", function(data){
+            //     $scope.allUsers = data;
+            //     console.log($scope.allUsers);
+            // });
 
         $scope.sendMessage = function(message){
             message.name = $scope.person[0].name;
