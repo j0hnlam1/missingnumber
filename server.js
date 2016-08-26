@@ -62,6 +62,18 @@ io.sockets.on('connection', function(socket){
 	// socket.emit('messages', messages);
 	// socket.emit('userlist', users);
 	var me = "";
+
+
+	// when chatController gets clicked
+	socket.on("getonlineusers", function(){
+		socket.emit("userlist", users)
+	})
+
+
+	socket.on("getmessages", function(){
+		socket.emit("messages", messages)
+	})
+
 	socket.on("login", function(user){
 		console.log(me);
 		var index = users.indexOf(user);
@@ -79,11 +91,14 @@ io.sockets.on('connection', function(socket){
 		io.sockets.emit('messages', messages);
 	})
 
+	// from userFactory when logging in
 	socket.on('info', function(data) {
-		console.log(socket.id);
-		console.log(data);
-		socket.broadcast.emit('data', {data: data, info: socket.id});
+		users.push(data[0]);
+		// socket.broadcast.emit('data', {data: data, info: socket.id});
+		socket.broadcast.emit("userlist", users)
 	})
+
+
 	socket.on('disconnect', function(){
 		console.log('disconnect');
 		var index = users.indexOf(me);

@@ -2,7 +2,7 @@ myApp.factory('userFactory', function($http){
 	var factory = {};
 	var userInfo = {};
 	var login = null;
-	var socket = io.connect();
+	// var socket = io.connect();
 	factory.socketInfo = function(callback) {
 		callback(socket);
 	}  
