@@ -43,6 +43,7 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
     $scope.highlighted = 0;
     $scope.loggedin = false;
 
+    
     var d = new Date();
     d.setDate(d.getDate() - 1);
     var n = d.toISOString();
@@ -116,8 +117,8 @@ function mapController($scope, $routeParams, NgMap, mapFactory, userFactory, $lo
         var n = d.toISOString();
         // current position coordinates
         $scope.pos = {
-            lat: 0,
-            lng: 0
+            lat: 37.32966,
+            lng: -121.890299
         };
         var icon = {
             url: '../assets/images/ash.png',

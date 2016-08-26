@@ -8,8 +8,8 @@ const https = require('https');
 const fs = require('fs');
 
 var options = {
-  // key: fs.readFileSync('yourname.key'),
-  // cert: fs.readFileSync('yourname.csr'),
+  key: fs.readFileSync('mykey.pem'),
+  cert: fs.readFileSync('mycsr.pem'),
   ca: fs.readFileSync('1_www.pokehorizon.com_bundle.crt')
 };
 //
@@ -41,14 +41,14 @@ require('./backend/config/db.js');
 require('./backend/config/routes.js')(app);
 
 
-// var server = app.listen(8000, function(){
-// 	console.log('now listening to port 8000');
-// 	console.log('chat room');
-// })
+var server = app.listen(8000, function(){
+	console.log('now listening to port 8000');
+	console.log('chat room');
+})
 
-var server = https.createServer(options, app).listen(8000, function(){
-    console.log("server started at port 8000");
-});
+// var server = https.createServer(options, app).listen(8000, function(){
+//     console.log("server started at port 8000");
+// });
 
 
 
@@ -70,7 +70,7 @@ io.sockets.on('connection', function(socket){
 		me = user;
 		// socket.emit("users", users);
 		socket.emit('messages', messages);
-		socket.emit('userlist', users);
+		socket.broadcast.emit('newUser', me);
 	})
 
 	socket.on('new_message', function(data){

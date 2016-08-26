@@ -28,11 +28,15 @@
             $scope.$digest();
         });
 
-        socket.on("userlist", function(userlist){
-            $scope.userlist = userlist;
+        socket.on("newUser", function(newUser){
+            $scope.userlist.push(newUser);
             $scope.$digest();
             console.log($scope.userlist);
         });
+        socket.on("removeUser", function(user) {
+            var index = $scope.userlist.indexOf(user);
+            $scope.userlist.splice(index, 1);
+        })
         if ($scope.person == undefined) {
             socket.on("data", function(data) {
                 var res = data.info.slice(2);
