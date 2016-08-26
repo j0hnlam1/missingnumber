@@ -59,49 +59,33 @@ var users = [];
 
 io.sockets.on('connection', function(socket){
 	console.log('connection');
-	// socket.emit('messages', messages);
-	// socket.emit('userlist', users);
 	var me = "";
 
-
-	// when chatController gets clicked
-	socket.on("getonlineusers", function(){
-		socket.emit("userlist", users)
+	// from userFactory when logging in
+	socket.on('info', function(data) {
+		users.push(data);
+		socket.broadcast.emit('data', {data: data, info: socket.id});
 	})
-
-
-	socket.on("getmessages", function(){
-		socket.emit("messages", messages)
-	})
-
+	// chat controller sends user info here and adds them to the users array, also sends current messages
 	socket.on("login", function(user){
-		console.log(me);
 		var index = users.indexOf(user);
 		users.splice(index, 1);
 		users.push(user);
 		me = user;
-		// socket.emit("users", users);
-		socket.emit('messages', messages);
-		socket.broadcast.emit('newUser', me);
+		socket.broadcast.emit('newUser', users);
+		socket.emit('firstMessages', messages);
 	})
-
+	// receives new message, adds it to array, and emits whole array
 	socket.on('new_message', function(data){
 		console.log(data);
 		messages.push(data);
 		io.sockets.emit('messages', messages);
 	})
-
-	// from userFactory when logging in
-	socket.on('info', function(data) {
-		users.push(data[0]);
-		// socket.broadcast.emit('data', {data: data, info: socket.id});
-		socket.broadcast.emit("userlist", users)
-	})
-
-
+	// disconnect events
 	socket.on('disconnect', function(){
 		console.log('disconnect');
 		var index = users.indexOf(me);
 		users.splice(index, 1);
+		socket.broadcast.emit('removeUser', users)
 	})
 })
