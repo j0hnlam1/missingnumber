@@ -23,7 +23,7 @@
                 } else {
                     socket.emit("login", data[0].name);
                     $scope.person = data[0];
-                    $scope.userlist.push($scope.person);
+                    $scope.userlist.push($scope.person.name);
                 }
             });
         }
@@ -40,7 +40,7 @@
                     } else {                
                         socket.emit("login", data.data[0].name);
                         $scope.person = data.data[0];
-                        $scope.userlist.push($scope.person);
+                        $scope.userlist.push($scope.person.name);
                         $scope.$digest();
                     }
                     socket.removeListener('data');
@@ -55,7 +55,8 @@
         // when a new user logs on they send a broadcast that gets caught here and $scope.userlist
         // gets replaced with the server userlist
         socket.on("newUser", function(newUserList){
-            $scope.userlist.push(newUserList);
+            console.log(newUserList);
+            $scope.userlist = newUserList;
             $scope.$digest();
         });
         // a message is sent and we send the message to the server
@@ -72,6 +73,8 @@
         // when a user disconnects this removes them from the userlist
         socket.on("removeUser", function(userList) {
             $scope.userlist = userList;
+            console.log(userList);
+            $scope.$digest();
         })
         
         document.getElementById("message").addEventListener("keydown", function(e) {

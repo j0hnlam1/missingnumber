@@ -63,29 +63,36 @@ io.sockets.on('connection', function(socket){
 
 	// from userFactory when logging in
 	socket.on('info', function(data) {
-		users.push(data);
 		socket.broadcast.emit('data', {data: data, info: socket.id});
 	})
 	// chat controller sends user info here and adds them to the users array, also sends current messages
 	socket.on("login", function(user){
 		var index = users.indexOf(user);
-		users.splice(index, 1);
+		if (index != -1) {
+			users.splice(index, 1);
+		}
 		users.push(user);
 		me = user;
-		socket.broadcast.emit('newUser', users);
+		io.sockets.emit('newUser', users);
 		socket.emit('firstMessages', messages);
+		// console.log(users);
 	})
 	// receives new message, adds it to array, and emits whole array
 	socket.on('new_message', function(data){
-		console.log(data);
+		console.log("me: " + me);
 		messages.push(data);
 		io.sockets.emit('messages', messages);
 	})
 	// disconnect events
 	socket.on('disconnect', function(){
 		console.log('disconnect');
-		var index = users.indexOf(me);
-		users.splice(index, 1);
+		console.log("me: " + me);
+		if (me != "") {
+			var index = users.indexOf(me);
+			users.splice(index, 1);
+		}
+		
+		// console.log(users);
 		socket.broadcast.emit('removeUser', users)
 	})
 })
