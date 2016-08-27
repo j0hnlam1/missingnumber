@@ -86,10 +86,15 @@ io.sockets.on('connection', function(socket){
 		console.log('disconnect');
 		if (me != "") {
 			var index = users.indexOf(me);
-			if (index != 1) {
+			// console.log(me);
+			// console.log(index);
+			if (index != -1) {
+
 				users.splice(index, 1);
+				console.log(users);
+				socket.broadcast.emit('removeUser', users)
 			}
 		}
-		socket.broadcast.emit('removeUser', users)
+		
 	})
 })
