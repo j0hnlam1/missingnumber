@@ -75,24 +75,21 @@ io.sockets.on('connection', function(socket){
 		me = user;
 		io.sockets.emit('newUser', users);
 		socket.emit('firstMessages', messages);
-		// console.log(users);
 	})
 	// receives new message, adds it to array, and emits whole array
 	socket.on('new_message', function(data){
-		console.log("me: " + me);
 		messages.push(data);
 		io.sockets.emit('messages', messages);
 	})
 	// disconnect events
 	socket.on('disconnect', function(){
 		console.log('disconnect');
-		console.log("me: " + me);
 		if (me != "") {
 			var index = users.indexOf(me);
-			users.splice(index, 1);
+			if (index != 1) {
+				users.splice(index, 1);
+			}
 		}
-		
-		// console.log(users);
 		socket.broadcast.emit('removeUser', users)
 	})
 })

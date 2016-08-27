@@ -23,7 +23,7 @@
                 } else {
                     socket.emit("login", data[0].name);
                     $scope.person = data[0];
-                    $scope.userlist.push($scope.person.name);
+                    // $scope.userlist.push($scope.person.name);
                 }
             });
         }
@@ -40,7 +40,7 @@
                     } else {                
                         socket.emit("login", data.data[0].name);
                         $scope.person = data.data[0];
-                        $scope.userlist.push($scope.person.name);
+                        // $scope.userlist.push($scope.person.name);
                         $scope.$digest();
                     }
                     socket.removeListener('data');
